@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/dialog_settings_dialog_name_edit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dialog_name_edit_height"
+        android:textSize="@dimen/text_large_body"
+        android:hint="Name this group"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:maxLength="30"
+        android:focusable="false"
+        android:drawableRight="@drawable/ic_edit_24dp"
+        android:background="@color/white"
+        android:imeOptions="actionDone"
+        android:paddingLeft="@dimen/horizontal_margin"
+        android:paddingRight="@dimen/horizontal_margin" />
+
+</LinearLayout>

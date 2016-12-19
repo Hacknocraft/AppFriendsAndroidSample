@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/horizontal_margin"
+    android:background="@color/white"
+    android:id="@+id/group_members_add"
+    >
+    <TextView
+        android:id="@+id/group_members"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Group Members"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/text_small_body"
+        style="@style/ItemTitleSingleLine" />
+
+    <ImageView
+        android:id="@+id/contact_picking_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        android:src="@drawable/ic_person_add"
+        android:layout_alignLeft="@+id/group_members"
+        android:layout_below="@+id/group_members"/>
+
+    <TextView
+        android:id="@+id/add_members_label"
+        android:layout_toRightOf="@id/contact_picking_icon"
+        android:layout_below="@id/group_members"
+        android:text="Add Members"
+        android:textSize="@dimen/text_large_body"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

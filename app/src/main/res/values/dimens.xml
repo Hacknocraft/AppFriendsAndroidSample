@@ -1,0 +1,76 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="margin">16dp</dimen>
+    <dimen name="margin_narrow">10dp</dimen>
+    <dimen name="margin_xnarrow">5dp</dimen>
+    <dimen name="margin_wide">20dp</dimen>
+    <dimen name="margin_xwide">30dp</dimen>
+    <dimen name="margin_xxwide">40dp</dimen>
+    <dimen name="horizontal_margin">@dimen/margin</dimen>
+    <dimen name="vertical_margin">@dimen/margin</dimen>
+    <dimen name="padding">10dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_narrow">5dp</dimen>
+
+    <dimen name="text_headline">24sp</dimen>
+    <dimen name="text_large_title">22sp</dimen>
+    <dimen name="text_title">20sp</dimen>
+    <dimen name="text_large_body">17sp</dimen>
+    <dimen name="text_body">15sp</dimen>
+    <dimen name="text_small_body">13sp</dimen>
+    <dimen name="text_xsmall_body">11sp</dimen>
+
+    <dimen name="header_height">40dp</dimen>
+    <dimen name="item_divider_height">1dp</dimen>
+    <dimen name="thin_divider_height">0.5dp</dimen>
+
+    <dimen name="line_weight_thin">0.5dp</dimen>
+    <dimen name="line_weight">1dp</dimen>
+    <dimen name="xxxsmall">2dp</dimen>
+    <dimen name="xxsmall">4dp</dimen>
+    <dimen name="xsmall">8dp</dimen>
+    <dimen name="small">16dp</dimen>
+    <dimen name="medium">24dp</dimen>
+    <dimen name="large">32dp</dimen>
+    <dimen name="xlarge">48dp</dimen>
+    <dimen name="xxlarge">64dp</dimen>
+
+    <!-- Dialog List Fragment -->
+    <dimen name="dialog_list_item_height">72dp</dimen>
+    <dimen name="dialog_list_item_image_size">40dp</dimen>
+    <dimen name="dialog_list_item_badge_size">5dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Contacts list -->
+    <dimen name="contact_list_item_height">72dp</dimen>-->
+    <dimen name="contact_list_item_left_margin">72dp</dimen>
+    <dimen name="contact_list_section_header_size">30dp</dimen>
+    <dimen name="contact_list_section_header_text_size">20sp</dimen>
+    <dimen name="contact_search_input_max_height">120dp</dimen>
+    <dimen name="contact_search_input_min_height">50dp</dimen>
+
+    <!-- Messages -->
+    <dimen name="message_item_cell_min_height">30dp</dimen>
+    <dimen name="message_item_cell_min_width">30dp</dimen>
+    <dimen name="message_item_avatar_size">30dp</dimen>
+    <dimen name="message_item_avatar_corner_mask_size">40dp</dimen>
+    <dimen name="message_item_radius_size">4dp</dimen>
+    <dimen name="message_item_text_size">14sp</dimen>
+    <dimen name="message_item_image_width">240dp</dimen>
+    <dimen name="message_item_image_height">130dp</dimen>
+    <dimen name="message_item_video_play_icon_size">40dp</dimen>
+    <dimen name="message_attachment_button_size">49dp</dimen>
+
+    <!-- Dialog settings -->
+    <dimen name="dialog_settings_divider_height">20dp</dimen>
+    <dimen name="dialog_name_edit_height">38dp</dimen>
+    <dimen name="settings_button_width">170dp</dimen>
+    <dimen name="settings_button_height">36dp</dimen>
+    <dimen name="settings_button_margin">20dp</dimen>
+    <dimen name="settings_cell_height">36dp</dimen>
+    <dimen name="settings_cell_right_clickable_area_size">28dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/horizontal_margin"
+    android:paddingRight="@dimen/horizontal_margin"
+    android:background="@color/white"
+    >
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/mute_conversation_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:checked="true"/>
+
+    <TextView
+        android:id="@+id/mute_conversation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mute Conversation"
+        style="@style/ItemTitleSingleLine"
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/text_large_body"
+        android:layout_toLeftOf="@+id/mute_conversation_button"
+        android:layout_marginBottom="@dimen/margin_wide" />
+
+</RelativeLayout>

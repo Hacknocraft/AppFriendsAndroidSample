@@ -1,0 +1,149 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="buttonStyle">@style/CamelCaseButton</item>
+    </style>
+
+    <style name="CamelCaseButton" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textAlignment">gravity</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
+    <style name="FloatingActionButton">
+        <item name="fabSize">normal</item>
+        <item name="android:src">@drawable/ic_add_white_24dp</item>
+        <item name="android:layout_margin">@dimen/margin</item>
+        <item name="borderWidth">0dp</item>
+        <item name="android:translationZ">6dp</item>
+        <item name="android:backgroundTint">@color/orange</item>
+        <item name="pressedTranslationZ">4dp</item>
+    </style>
+
+    <style name="ItemRightArrow">
+        <item name="android:src">@drawable/ic_keyboard_arrow_right_white_24dp</item>
+    </style>
+
+    <style name="ItemTitleSingleLine">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/off_black</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="RedRoundActionButton">
+
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:background">@drawable/red_round_corner_40dp</item>
+
+    </style>
+
+    <style name="Font">
+        <item name="android:textColor">@color/off_black</item>
+    </style>
+
+    <style name="Font.Regular" parent="Font">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="Font.Medium" parent="Font">
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+    </style>
+
+    <style name="Font.Bold" parent="Font">
+        <item name="fontPath">fonts/Roboto-Bold.ttf</item>
+    </style>
+
+    <!-- Style guide fonts -->
+
+    <style name="Font.Title1" parent="Font.Medium">
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="Font.Title2" parent="Font.Medium">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Font.Title3" parent="Font.Bold">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Font.Title4" parent="Font.Regular">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Font.Title5" parent="Font.Medium">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Font.Title5.Bold" parent="Font.Bold">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Font.Body1" parent="Font.Regular">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Font.Body2" parent="Font.Regular">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Font.Body2.Medium" parent="Font.Medium">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Font.Body2.Bold" parent="Font.Bold">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Font.Body3" parent="Font.Regular">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Font.Body4" parent="Font.Medium">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Font.Body5" parent="Font.Regular">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="Font.Label1" parent="Font.Medium">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="Font.Label2" parent="Font.Bold">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="Font.ContactItemHeader" parent="Font.Bold">
+        <item name="android:textSize">@dimen/contact_list_section_header_text_size</item>
+        <item name="android:textColor">@color/cool_gray</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="Font.NavBarHeader" parent="Font.Bold">
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

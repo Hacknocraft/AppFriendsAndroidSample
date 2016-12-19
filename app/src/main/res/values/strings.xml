@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">AppFriends Sample</string>
+
+    <!-- Main Activity -->
+    <string name="tab_dialogs_list">Messages</string>
+    <string name="tab_empty">Some View</string>
+
+    <!-- Time -->
+    <string name="time_today">Today</string>
+    <string name="time_yesterday">Yesterday</string>
+
+    <string-array name="days_of_week">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+
+    <!-- Message -->
+    <string name="message_preview_image">[image]</string>
+    <string name="message_preview_video">[video]</string>
+    <string name="clipboard_description">Message</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="message_composer_hint">Edit Message...</string>
+    <string name="message_composer_send_button">Send</string>
+    <string name="message_settings">Settings</string>
+    <string name="icon_settings_string">{md-settings}</string>
+    <string name="leave_conversation">Leave Conversation</string>
+    <string name="title_activity_image_viewer">ImageViewerActivity</string>
+
+    <!-- Extra -->
+    <string name="EXTRA_IMAGE_URL">com.appfriends.activity.extra.EXTRA_IMAGE_URL</string>
+    <string name="EXTRA_VIDEO_URL">com.appfriends.activity.extra.EXTRA_VIDEO_URL</string>
+    <string name="EXTRA_CONTACTS_PICK">com.appfriends.activity.extra.CONTACT_PICK_URL</string>
+
+    <!-- id -->
+    <item name="IMAGE_TAG_KEY" type="id" />
+    <item name="VIDEO_TAG_KEY" type="id" />
+    <string name="title_activity_login">LoginActivity</string>
+</resources>

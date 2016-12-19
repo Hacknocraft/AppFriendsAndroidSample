@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/main_background_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/contacts_picker_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/nav_bar_background_color"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        android:theme="@style/ToolbarTheme"
+        android:elevation="@dimen/xsmall" >
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="@dimen/contact_search_input_max_height"
+            android:minHeight="@dimen/contact_search_input_min_height"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/contacts_picker_back_button"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight = "0"
+                android:src="@drawable/ic_nav_clear"
+                android:tint="@color/white"
+                android:background="@color/transparent"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="@dimen/small"
+                android:paddingLeft="@dimen/medium"
+                android:paddingTop="@dimen/xxsmall"
+                android:paddingBottom="@dimen/xxsmall"
+                />
+
+            <me.appfriends.androidsample.sampleapp.contacts.ContactsSearchInputView
+                android:id="@+id/contact_picker_search_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight = "1"
+                android:maxHeight="@dimen/contact_search_input_max_height"
+                android:hint="Add or search for contact"
+                android:textColorHint="@color/white_50"
+                android:layout_gravity="center_vertical"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:layout_marginLeft="@dimen/margin_narrow"
+                android:layout_marginRight="@dimen/margin_narrow"/>
+
+            <ImageButton
+                android:id="@+id/contacts_picker_finish_button"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight = "0"
+                android:src="@drawable/ic_nav_check"
+                android:tint="@color/white"
+                android:background="@color/transparent"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="@dimen/medium"
+                android:paddingLeft="@dimen/small"
+                android:paddingTop="@dimen/xxsmall"
+                android:paddingBottom="@dimen/xxsmall"
+                />
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.Toolbar>
+
+    <me.appfriends.androidsample.sampleapp.contacts.ContactsPickerView
+        android:id="@+id/contacts_picker_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="6dp"
+        android:paddingTop="6dp"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+</LinearLayout>

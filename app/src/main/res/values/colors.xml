@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material colors -->
+    <color name="colorPrimary">@color/blue</color>
+    <color name="colorPrimaryDark">#0065ad</color>
+    <color name="colorAccent">@color/blue</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- GC Primary -->
+    <color name="blue">#0080d6</color>
+    <color name="white">#fff</color>
+    <color name="off_black">#35373d</color>
+    <color name="black">#000</color>
+    <color name="charcoalGrey">#35373d</color>
+
+    <!-- GC Neutral -->
+    <color name="gray_darker">#444444</color>
+    <color name="gray_dark">#797979</color>
+    <color name="gray">#c8c8c8</color>
+    <color name="gray_light">#d6d6d6</color>
+    <color name="gray_lighter">#eaeaea</color>
+    <color name="cool_gray_dark">#667c8c</color>
+    <color name="cool_gray">#a6b4bf</color>
+    <color name="cool_gray_light">#ced8df</color>
+    <color name="cool_gray_lighter">#f5f8fa</color>
+
+    <!-- GC Secondary -->
+    <color name="blue_light">#39beff</color>
+    <color name="blue_dark">#19467c</color>
+    <color name="green">#009345</color>
+    <color name="green_dark">#006629</color>
+    <color name="teal">#00999a</color>
+    <color name="teal_dark">#006c6c</color>
+    <color name="slate">#59787b</color>
+    <color name="red">#ea2127</color>
+    <color name="red_dark">#a50005</color>
+    <color name="orange">#f47522</color>
+    <color name="orange_dark">#c35106</color>
+    <color name="yellow">#f1ac0a</color>
+
+    <!-- Alpha colors -->
+    <color name="blue_50">#800080d6</color>
+    <color name="black_50">#80000000</color>
+    <color name="black_90">#e7000000</color>
+    <color name="orange_50">#80f47522</color>
+    <color name="white_50">#80ffffff</color>
+    <color name="gray_light_50">#80d6d6d6</color>
+    <color name="gray_darker_50">#80444444</color>
+    <color name="off_black_50">#8035373d</color>
+
+    <!-- Custom Colors -->
+    <color name="unselected_tab">#80ffffff</color>
+    <color name="item_divider">#e5e5e5</color>
+    <color name="main_background_color">#fff</color>
+    <color name="nav_bar_background_color">@color/blue</color>
+    <color name="nav_bar_icon_color">#fff</color>
+    <color name="contact_token_color">#45a0dd</color>
+    <color name="contact_checkbox_color">#45a0dd</color>
+    <color name="avatar_background_color">@color/cool_gray</color>
+    <color name="avatar_icon_color">@color/white</color>
+    <color name="edit_text_background">@color/white</color>
+    <color name="ic_table_row_icons">#a9b4be</color>
+
+    <!-- Messages -->
+    <color name="message_date_title_color">@color/cool_gray</color>
+    <color name="message_sender_name_color">@color/cool_gray</color>
+    <color name="message_in_bubble_color">@color/cool_gray_lighter</color>
+    <color name="message_out_bubble_color">@color/blue</color>
+    <color name="message_in_text_color">@color/charcoalGrey</color>
+    <color name="message_out_text_color">@color/white</color>
+    <color name="message_system_text_color">@color/cool_gray</color>
+    <color name="message_composer_attachment_icon_color">#888e96</color>
+    <color name="message_composer_color">@color/cool_gray_lighter</color>
+    <color name="message_image_background_color">@color/gray_darker_50</color>
+
+    <!-- Dialog -->
+    <color name="dialog_settings_divider">#EFF3F5</color>
+</resources>

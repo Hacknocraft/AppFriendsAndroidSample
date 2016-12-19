@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contact_list_item_height">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:duplicateParentState="true"
+        android:orientation="horizontal"
+        android:background="@color/main_background_color"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+
+        <!-- right content part -->
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
+
+            <!-- delimiter -->
+            <View
+                android:id="@+id/user_list_item_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="@dimen/xxlarge"
+                android:background="@color/item_divider"
+                />
+
+            <TextView
+                android:id="@+id/user_list_section_title"
+                android:layout_width="@dimen/contact_list_section_header_size"
+                android:layout_height="@dimen/contact_list_section_header_size"
+                android:layout_marginLeft="@dimen/margin_wide"
+                android:layout_marginTop="@dimen/margin_narrow"
+                android:text="A"
+                style="@style/Font.ContactItemHeader"
+                />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight = "1"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/contact_list_item_left_margin"
+                android:paddingRight="@dimen/padding"
+                >
+
+                <TextView
+                    android:id="@+id/user_item_name_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/off_black"
+                    android:maxLines="1"
+                    android:text="Username"
+                    android:textSize="@dimen/text_large_body"
+                    />
+
+                <TextView
+                    android:id="@+id/user_list_item_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="2"
+                    android:layout_marginTop="@dimen/xxsmall"
+                    android:textColor="@color/cool_gray"
+                    android:text="User information"
+                    android:textSize="@dimen/text_body"
+                    />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/user_list_item_check_indicator"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_nav_check"
+                android:tint="@color/white"
+                android:background="@drawable/check_box_background"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="@dimen/margin"
+                />
+
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
