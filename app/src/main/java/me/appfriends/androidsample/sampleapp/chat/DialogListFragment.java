@@ -2,10 +2,8 @@ package me.appfriends.androidsample.sampleapp.chat;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,7 +23,6 @@ import me.appfriends.androidsample.sampleapp.LocalUsersDatabase;
 import me.appfriends.androidsample.sampleapp.contacts.ContactsPickerActivity;
 import me.appfriends.sdk.model.Dialog;
 import me.appfriends.ui.base.BaseFragment;
-import me.appfriends.ui.base.DividerItemDecoration;
 import me.appfriends.ui.dialog.DialogActivity;
 import me.appfriends.ui.dialoglist.DialogListAdapter;
 import me.appfriends.ui.models.UserModel;
@@ -81,10 +78,6 @@ public class DialogListFragment extends BaseFragment implements DialogListContra
         adapter = new DialogsAdapter(getContext());
 
         recyclerView.setAdapter(adapter);
-        Drawable dividerDrawable = ContextCompat.getDrawable(getContext(), R.drawable.divider_recycler);
-        RecyclerView.ItemDecoration dividerDecoration = new DividerItemDecoration(dividerDrawable);
-        recyclerView.addItemDecoration(dividerDecoration);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 

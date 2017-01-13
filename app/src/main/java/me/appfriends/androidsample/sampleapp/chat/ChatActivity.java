@@ -1,6 +1,7 @@
 package me.appfriends.androidsample.sampleapp.chat;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 import org.parceler.Parcels;
 
@@ -12,6 +13,13 @@ import me.appfriends.ui.dialog.DialogActivity;
  */
 
 public class ChatActivity extends DialogActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // ability to hide settings icon
+        // settingsButton.setVisibility(View.GONE);
+    }
 
     @Override
     public void goToSettings() {
