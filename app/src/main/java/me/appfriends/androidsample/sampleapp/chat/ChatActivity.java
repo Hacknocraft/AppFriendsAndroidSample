@@ -6,15 +6,19 @@ import android.os.Bundle;
 import org.parceler.Parcels;
 
 import me.appfriends.androidsample.sampleapp.dialogsettings.DialogSettingsActivity;
+import me.appfriends.sdk.model.Dialog;
 import me.appfriends.ui.dialog.DialogActivity;
+
+import static me.appfriends.androidsample.sampleapp.dialogsettings.DialogSettingsActivity.EXTRA_DIALOG;
 
 /**
  * Created by haowang on 12/4/16.
  */
 
 public class ChatActivity extends DialogActivity {
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // ability to hide settings icon
@@ -22,11 +26,11 @@ public class ChatActivity extends DialogActivity {
     }
 
     @Override
-    public void goToSettings() {
-        super.goToSettings();
+    public void goToSettings(final Dialog dialog) {
+        super.goToSettings(dialog);
 
         Intent intent = new Intent(this, DialogSettingsActivity.class);
-        intent.putExtra("dialog", Parcels.wrap(this.dialog));
+        intent.putExtra(EXTRA_DIALOG, Parcels.wrap(dialog));
         startActivityForResult(intent, 0);
     }
 

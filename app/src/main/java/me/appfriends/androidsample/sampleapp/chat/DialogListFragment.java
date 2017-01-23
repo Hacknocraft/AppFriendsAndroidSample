@@ -144,7 +144,7 @@ public class DialogListFragment extends BaseFragment implements DialogListContra
         }
 
         Intent intent = new Intent(getContext(), ChatActivity.class);
-        intent.putExtra(DialogActivity.EXTRA_DIALOG, Parcels.wrap(dialog));
+        intent.putExtra(DialogActivity.EXTRA_DIALOG_ID, dialog.id);
         getActivity().startActivity(intent);
     }
 
@@ -166,7 +166,7 @@ public class DialogListFragment extends BaseFragment implements DialogListContra
         public void dialogSelected(Dialog dialog) {
 
             Intent intent = new Intent(context, ChatActivity.class);
-            intent.putExtra(DialogActivity.EXTRA_DIALOG, Parcels.wrap(dialog));
+            intent.putExtra(DialogActivity.EXTRA_DIALOG_ID, dialog.id);
             context.startActivity(intent);
         }
     }

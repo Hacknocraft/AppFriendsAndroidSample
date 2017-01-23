@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             this.setOnItemSelectListener(new OnItemSelectListener() {
                 @Override
                 public void onItemSelected(int position) {
-                    UserModel userModel = getItem(position);
+                    final UserModel userModel = getItem(position);
 
                     final Toast loadingToast = Toast.makeText(context, "Logging in ...", Toast.LENGTH_LONG);
                     loadingToast.show();

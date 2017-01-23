@@ -52,7 +52,7 @@ public class DialogListPresenter extends BasePresenter<DialogListContract.View> 
 
     @Override
     public void createDialog(String name, List<String> pickedUserIds) {
-        Subscription createDialogSubscription = dialogService.createDialog("", pickedUserIds)
+        Subscription createDialogSubscription = dialogService.createDialog(name, pickedUserIds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Dialog>() {

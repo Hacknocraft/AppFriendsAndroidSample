@@ -38,7 +38,6 @@
     <!-- Dialog List Fragment -->
     <dimen name="dialog_list_item_height">72dp</dimen>
     <dimen name="dialog_list_item_image_size">40dp</dimen>
-    <dimen name="dialog_list_item_badge_size">5dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>

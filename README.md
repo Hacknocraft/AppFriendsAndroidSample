@@ -46,3 +46,25 @@ AppFriends.getInstance().login("user_id", "user_name")
                             });
   ```
 
+## Push Notification
+You can register the device with AppFriends and receive push notification by:
+```
+AppFriends.getInstance().pushService().registerPushToken(userId,
+        FirebaseInstanceId.getInstance().getToken())
+        .subscribe(new Subscriber<Boolean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, e.getMessage());
+            }
+
+            @Override
+            public void onNext(Boolean registered) {
+                Log.d(TAG, "push token registered: " + registered);
+            }
+        });
+```

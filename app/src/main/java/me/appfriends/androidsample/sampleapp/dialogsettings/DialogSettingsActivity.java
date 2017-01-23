@@ -36,6 +36,9 @@ import rx.schedulers.Schedulers;
  */
 
 public class DialogSettingsActivity extends BaseActivity implements DialogSettingsAdapter.DialogSettingsAdapterClickListener {
+    public static final String TAG = DialogSettingsActivity.class.getSimpleName();
+
+    public static final String EXTRA_DIALOG = TAG + "EXTRA_DIALOG";
 
     private RecyclerView recyclerView;
     private Toolbar navigationBar;
@@ -51,7 +54,7 @@ public class DialogSettingsActivity extends BaseActivity implements DialogSettin
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.dialog = Parcels.unwrap(getIntent().getParcelableExtra("dialog"));
+        this.dialog = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_DIALOG));
         setContentView(R.layout.activity_dialog_settings);
 
         recyclerView = (RecyclerView) findViewById(R.id.dialog_settings_items_view);
