@@ -2,6 +2,19 @@
 This sample app is created by AppFriends to demo AppFriends Android SDK.
 
 ## Gradle Integration
+Add the following to your build.gradle files.
+
+### Project Level Gradle
+```
+allprojects {
+    repositories {
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+### App Level Gradle
 ```
 repositories {
     maven { url 'https://raw.githubusercontent.com/Hacknocraft/AppFriendsAndroidCore/master/' }
