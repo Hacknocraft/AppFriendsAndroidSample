@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     // AppFriends
-    compile 'me.appfriends.sdk:ui:3.0.3'
+    compile 'me.appfriends.sdk:ui:3.0.5'
 }
 ```
 
