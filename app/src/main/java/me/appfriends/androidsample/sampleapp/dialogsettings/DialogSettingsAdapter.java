@@ -3,6 +3,8 @@ package me.appfriends.androidsample.sampleapp.dialogsettings;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -181,13 +183,32 @@ public class DialogSettingsAdapter extends BaseAdapter<Dialog, DialogSettingsAda
                     public void onFocusChange(View view, boolean hasFocus) {
 
                         // submit the new group name if it has changed
-                        if (!hasFocus && groupNameEdit.getText() != null &&
-                                groupNameEdit.getText().length() > 0) {
+                        if (!hasFocus) {
+                            changeDialogName();
+                        }
+                    }
+                });
+                groupNameEdit.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
 
-                            if (dialogSettingsAdapterClickListener != null) {
-                                dialogSettingsAdapterClickListener.onDialogNameChange(groupNameEdit.getText().toString());
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                        for(int i = editable.length(); i > 0; i--) {
+
+                            if(editable.subSequence(i-1, i).toString().equals("\n")) {
+
+                                editable.replace(i-1, i, "");
+                                changeDialogName();
                             }
                         }
+
                     }
                 });
             }
@@ -231,5 +252,17 @@ public class DialogSettingsAdapter extends BaseAdapter<Dialog, DialogSettingsAda
             userNameTitle = (TextView) itemView.findViewById(R.id.user_item_name_title);
             userNameSubtitle = (TextView) itemView.findViewById(R.id.user_list_item_subtitle);
         }
+
+
+        private void changeDialogName() {
+            if (groupNameEdit.getText() != null &&
+                    groupNameEdit.getText().length() > 0) {
+
+                if (dialogSettingsAdapterClickListener != null) {
+                    dialogSettingsAdapterClickListener.onDialogNameChange(groupNameEdit.getText().toString());
+                }
+            }
+        }
     }
+
 }

@@ -1,3 +1,14 @@
+3.0.6 (2017-01-27)
+------------------
+
+- fixed bug with push registration return value
+- added checks for client app backgrounding/foregrounding
+- added sending read receipts
+- added live dialog information update
+- added permission checking for picking image and taking new photos
+- handle dialog name change and adding new users from another device to group dialog in chat
+- added interface to receive callback when send messages
+
 3.0.5 (2017-01-22)
 ------------------
 

@@ -23,6 +23,8 @@ import me.appfriends.sdk.AppFriends;
 import me.appfriends.ui.base.BaseAdapter;
 import me.appfriends.ui.models.UserModel;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -64,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                     loadingToast.show();
 
                     AppFriends.getInstance().login(userModel.id, userModel.getName())
+                            .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<Boolean>() {
                                 @Override
                                 public void onCompleted() {

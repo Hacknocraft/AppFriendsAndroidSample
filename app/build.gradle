@@ -68,7 +68,7 @@ dependencies {
     compile 'com.kaopiz:kprogresshud:1.0.5'
 
     // AppFriends
-    compile 'me.appfriends.sdk:ui:3.0.5'
+    compile 'me.appfriends.sdk:ui:3.0.6'
 }
 
 
