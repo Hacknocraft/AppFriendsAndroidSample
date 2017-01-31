@@ -1,3 +1,32 @@
+3.0.7 (2017-01-31)
+------------------
+
+- performance update with chat
+- fixed issues with message receipts sending multiple times and other issues
+- fixed a bug where read receipts are being sent for system messages
+- added a way to programmatically pass app id and app secret to init function "public void init(final Context context, final String appId, final String appSecret) "
+- updated animations for auto scrolling to new messages
+- updated camera and gallery permission support of Android M - N
+- to properly allow Android-N device to take pictures from camera, the app must expose file path for the camera app. Please add to the app's AndroidManifest.xml:
+```
+<provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+</provider>
+```
+and put a `provider_paths.xml` file inside `res/xml/` with:
+```
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="external_files" path="."/>
+</paths>
+```
+
 3.0.6 (2017-01-27)
 ------------------
 
