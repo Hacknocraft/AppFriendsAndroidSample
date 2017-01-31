@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "me.appfriends.androidsample"
         minSdkVersion 19
-        targetSdkVersion 24
+        targetSdkVersion 23
         versionCode 30005
         versionName "3.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
