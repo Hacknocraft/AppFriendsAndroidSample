@@ -1,3 +1,10 @@
+3.0.8 (2017-02-02)
+------------------
+
+- fixed the photos 90 degree rotated issues
+- fixed the read receipts sending problem
+- fixed the problem of opening chat directly from push notification
+
 3.0.7 (2017-01-31)
 ------------------
 
