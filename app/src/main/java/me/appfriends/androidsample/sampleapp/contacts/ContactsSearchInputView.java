@@ -2,8 +2,11 @@ package me.appfriends.androidsample.sampleapp.contacts;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.support.annotation.NonNull;
+import android.text.Editable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +37,17 @@ public class ContactsSearchInputView extends TokenCompleteTextView<UserModel> {
 
     public ContactsSearchInputView(Context context) {
         super(context);
+    }
 
+    @Override
+    public void addObject(UserModel object, CharSequence sourceText) {
+        super.addObject(object, sourceText);
+    }
 
+    @Override
+    public void addObject(UserModel object) {
+        this.deleteText();
+        super.addObject(object);
     }
 
     public ContactsSearchInputView(Context context, AttributeSet attrs) {
@@ -65,6 +77,11 @@ public class ContactsSearchInputView extends TokenCompleteTextView<UserModel> {
         }
 
         return new UserModel("", completionText);
+    }
+
+    public void deleteText() {
+        Editable text = getText();
+        text.replace(text.length() - currentCompletionText().length(), text.length(), "");
     }
 
     @Override

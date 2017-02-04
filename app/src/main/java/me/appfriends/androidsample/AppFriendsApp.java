@@ -1,7 +1,11 @@
 package me.appfriends.androidsample;
 
 import android.app.Application;
+import android.os.StrictMode;
 
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
 import me.appfriends.androidsample.sampleapp.LocalUsersDatabase;
 import me.appfriends.sdk.AppFriends;
 import timber.log.Timber;
@@ -16,6 +20,7 @@ public class AppFriendsApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         LocalUsersDatabase.sharedInstance().loadUsers(this);
 
@@ -32,6 +37,10 @@ public class AppFriendsApp extends Application {
 
         AppFriends instance = AppFriends.getInstance();
         instance.init(getApplicationContext());
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
     }
 
     private static class CrashReportingTree extends Timber.Tree {

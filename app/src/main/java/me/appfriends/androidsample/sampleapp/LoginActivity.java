@@ -19,8 +19,10 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import me.appfriends.androidsample.R;
+import me.appfriends.androidsample.sampleapp.chat.ChatActivity;
 import me.appfriends.sdk.AppFriends;
 import me.appfriends.ui.base.BaseAdapter;
+import me.appfriends.ui.dialog.DialogActivity;
 import me.appfriends.ui.models.UserModel;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -90,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                                         // TODO: perform login and get the userModel inside main activity
                                         Intent intent = new Intent(context, MainActivity.class);
                                         context.startActivity(intent);
+
                                     }
                                 }
                             });

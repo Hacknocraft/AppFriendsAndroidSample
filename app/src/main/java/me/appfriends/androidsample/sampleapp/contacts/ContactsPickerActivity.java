@@ -1,6 +1,5 @@
 package me.appfriends.androidsample.sampleapp.contacts;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +33,7 @@ public class ContactsPickerActivity extends AppCompatActivity
     private ContactsSearchInputView contactsSearchInputView;
 
     static public int ACTIVITY_RESULT_CODE_CONTACT_PICKING = 0;
+    static public String EXTRA_EXCLUDE_USERS = "EXTRA_EXCLUDE_USERS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,6 @@ public class ContactsPickerActivity extends AppCompatActivity
         setContentView(R.layout.activity_contacts_picker);
 
         ImageButton finishButton = (ImageButton) findViewById(R.id.contacts_picker_finish_button);
-        final Activity activity = this;
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,7 +55,20 @@ public class ContactsPickerActivity extends AppCompatActivity
             }
         });
 
-        usersList = LocalUsersDatabase.sharedInstance().getSeededUsers();
+        List<UserModel> allUsers = LocalUsersDatabase.sharedInstance().getSeededUsers();
+        ArrayList<UserModel> includedUsers = new ArrayList();
+        includedUsers.addAll(allUsers);
+        List<String> excludedUsers = getIntent().getStringArrayListExtra(EXTRA_EXCLUDE_USERS);
+        if (excludedUsers != null) {
+            for (UserModel user : allUsers) {
+                if (excludedUsers.contains(user.id)) {
+                    includedUsers.remove(user);
+                }
+            }
+        }
+
+        usersList = includedUsers;
+
         contactsSearchInputView = (ContactsSearchInputView) findViewById(R.id.contact_picker_search_field);
         contactsSearchInputView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, usersList.toArray()));
         contactsSearchInputView.setTokenListener(this);

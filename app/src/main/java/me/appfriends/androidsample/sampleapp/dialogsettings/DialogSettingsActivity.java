@@ -27,18 +27,25 @@ import me.appfriends.sdk.DialogService;
 import me.appfriends.sdk.model.Dialog;
 import me.appfriends.ui.base.BaseActivity;
 import me.appfriends.ui.base.DividerItemDecoration;
+import me.appfriends.ui.chat.ChatPresenter;
+import me.appfriends.ui.dialog.DialogActivity;
+import me.appfriends.ui.dialog.DialogContract;
+import me.appfriends.ui.dialog.DialogPresenter;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static me.appfriends.androidsample.sampleapp.contacts.ContactsPickerActivity.EXTRA_EXCLUDE_USERS;
 
 /**
  * Created by bigtom on 16/11/13.
  */
 
-public class DialogSettingsActivity extends BaseActivity implements DialogSettingsAdapter.DialogSettingsAdapterClickListener {
+public class DialogSettingsActivity extends BaseActivity
+        implements DialogSettingsAdapter.DialogSettingsAdapterClickListener, DialogContract.View {
     public static final String TAG = DialogSettingsActivity.class.getSimpleName();
 
-    public static final String EXTRA_DIALOG = TAG + "EXTRA_DIALOG";
+    public static final String EXTRA_DIALOG = "EXTRA_DIALOG";
 
     private RecyclerView recyclerView;
     private Toolbar navigationBar;
@@ -50,6 +57,10 @@ public class DialogSettingsActivity extends BaseActivity implements DialogSettin
     private DialogService dialogService;
 
     static public int ACTIVITY_RESULT_CODE_LEFT_DIALOG = 1;
+
+    private DialogPresenter presenter;
+
+    KProgressHUD hud;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +75,18 @@ public class DialogSettingsActivity extends BaseActivity implements DialogSettin
         setNavigationBar();
 
         dialogService = AppFriends.getInstance().dialogService();
+
+        // listen to dialog changes
+        presenter = new DialogPresenter();
+        presenter.attachView(this);
+        presenter.loadDialog(this.dialog.id);
+    }
+
+    public void onDestroy() {
+        if (presenter != null) {
+            presenter.detachView();
+        }
+        super.onDestroy();
     }
 
     private void setNavigationBar() {
@@ -152,7 +175,7 @@ public class DialogSettingsActivity extends BaseActivity implements DialogSettin
 
         if (dialog.type == Dialog.DialogType.GROUP) {
 
-            final KProgressHUD hud = KProgressHUD.create(this)
+            hud = KProgressHUD.create(this)
                     .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                     .setLabel("Please wait")
                     .setCancellable(true)
@@ -160,43 +183,19 @@ public class DialogSettingsActivity extends BaseActivity implements DialogSettin
                     .setDimAmount(0.5f)
                     .show();
 
-            final Context context = this;
-            dialogService.leaveDialog(dialog.id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<Boolean>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            e.printStackTrace();
-                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            adapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onNext(Boolean success) {
-                            hud.dismiss();
-                            setResult(ACTIVITY_RESULT_CODE_LEFT_DIALOG, null);
-                            finish();
-                        }
-                    });
-
-        } else {
-            // TODO: delete the private dialog here
-            setResult(ACTIVITY_RESULT_CODE_LEFT_DIALOG, null);
-            finish();
         }
+
+        presenter.leaveDialog(dialog.id, dialog.type);
     }
 
     @Override
     public void addGroupMembers() {
 
         Intent intent = new Intent(this, ContactsPickerActivity.class);
-        this.startActivityForResult(intent, 0);
+        if (dialog != null && dialog.memberIds != null) {
+            intent.putStringArrayListExtra(EXTRA_EXCLUDE_USERS, new ArrayList(dialog.memberIds));
+        }
+        this.startActivityForResult(intent, ContactsPickerActivity.ACTIVITY_RESULT_CODE_CONTACT_PICKING);
     }
 
     @Override
@@ -206,27 +205,7 @@ public class DialogSettingsActivity extends BaseActivity implements DialogSettin
 
             final Context context = this;
             String name = newName.replace("\n", "").replace("\r", "");
-            dialogService.updateDialog(dialog.id, name)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<Boolean>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            e.printStackTrace();
-                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            adapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onNext(Boolean success) {
-                            Toast.makeText(context, "Dialog name updated", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            presenter.updateDialogName(dialog.id, name);
         }
     }
 
@@ -234,32 +213,78 @@ public class DialogSettingsActivity extends BaseActivity implements DialogSettin
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (data != null && requestCode == 0 && resultCode == ContactsPickerActivity.ACTIVITY_RESULT_CODE_CONTACT_PICKING) {
+        if (data != null && resultCode == ContactsPickerActivity.ACTIVITY_RESULT_CODE_CONTACT_PICKING) {
 
             ArrayList<String> pickedUsers = (ArrayList<String>) data.getExtras().get(getString(R.string.EXTRA_CONTACTS_PICK));
-            final Context context = this;
-            final int count = pickedUsers.size();
-            dialogService.addMembersToDialog(dialog.id, pickedUsers)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<Boolean>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            e.printStackTrace();
-                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            adapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onNext(Boolean success) {
-                            Toast.makeText(context, count + "users added.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            presenter.addMembersToDialog(dialog.id, pickedUsers);
         }
+    }
+
+    @Override
+    public void onDialogUpdated(Dialog updatedDialog) {
+        this.dialog = updatedDialog;
+        adapter.updateDialog(dialog);
+    }
+
+    @Override
+    public void onDialogLoadingError(Throwable e) {
+        Toast.makeText(this, "Failed to load dialog", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDialogMuted() {
+
+    }
+
+    @Override
+    public void onDialogMutingError(Throwable e) {
+        adapter.notifyDataSetChanged(); // revert the switch back
+    }
+
+    @Override
+    public void onDialogMembersChanged() {
+        Toast.makeText(this, "users added.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDialogMembersChangeError(Throwable e) {
+        Toast.makeText(this, "failed to add users.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLeaveDialog() {
+        if (hud != null) {
+            hud.dismiss();
+        }
+        setResult(ACTIVITY_RESULT_CODE_LEFT_DIALOG, null);
+        finish();
+    }
+
+    @Override
+    public void onLeaveDialogError(Throwable e) {
+        Toast.makeText(this, "failed to leave dialog.", Toast.LENGTH_SHORT).show();
+        if (hud != null) {
+            hud.dismiss();
+        }
+    }
+
+    @Override
+    public void onDialogNameChanged() {
+        Toast.makeText(this, "Dialog name updated", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDialogNameChangeError(Throwable e) {
+
+        new AlertDialog.Builder(this)
+                .setTitle(getString(me.appfriends.ui.R.string.error_title))
+                .setMessage("Failed to change dialog name")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

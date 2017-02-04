@@ -52,6 +52,13 @@ public class DialogSettingsAdapter extends BaseAdapter<Dialog, DialogSettingsAda
         void onDialogNameChange(String newName);
     }
 
+    public void updateDialog(Dialog updatedDialog) {
+        if (updatedDialog != null) {
+            this.dialog = updatedDialog;
+            this.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public DialogSettingsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
