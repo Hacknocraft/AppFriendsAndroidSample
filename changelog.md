@@ -1,3 +1,11 @@
+3.0.9 (2017-02-04)
+------------------
+
+- fixed issues with blank chat view after opening chat from group dialog invitation push notification
+- display error marker when message failed to send and support re-send
+- update chat settings logic
+- other bug fixes and optimization
+
 3.0.8 (2017-02-02)
 ------------------
 
