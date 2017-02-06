@@ -34,6 +34,7 @@ android {
 }
 
 repositories {
+    maven { url 'https://maven.fabric.io/public' }
     maven { url 'https://raw.githubusercontent.com/Hacknocraft/AppFriendsAndroidCore/master/' }
 }
 
@@ -66,9 +67,12 @@ dependencies {
 
     // HUD
     compile 'com.kaopiz:kprogresshud:1.0.5'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+        transitive = true;
+    }
 
     // AppFriends
-    compile 'me.appfriends.sdk:ui:3.0.9'
+    compile 'me.appfriends.sdk:ui:3.0.10'
 }
 
 
