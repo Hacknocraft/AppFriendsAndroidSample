@@ -7,6 +7,7 @@
 ------------------
 
 - improved error output
+- handle blank chat view after opening chat from 1 on 1 chat dialog
 
 3.0.9 (2017-02-04)
 ------------------
