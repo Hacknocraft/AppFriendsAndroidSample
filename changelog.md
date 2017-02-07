@@ -1,3 +1,13 @@
+3.0.11 (2017-02-07)
+------------------
+
+- gracefully handle multiple logout in a row with catching null pointers and other exceptions to prevent crash
+
+3.0.10 (2017-02-05)
+------------------
+
+- improved error output
+
 3.0.9 (2017-02-04)
 ------------------
 
