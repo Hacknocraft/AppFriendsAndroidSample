@@ -1,3 +1,8 @@
+3.0.12 (2017-02-14)
+------------------
+
+- expose interface with `DialogService:createDialog`, so `custom_data` and `push_data` can be passed to create dialog.
+
 3.0.11 (2017-02-07)
 ------------------
 
