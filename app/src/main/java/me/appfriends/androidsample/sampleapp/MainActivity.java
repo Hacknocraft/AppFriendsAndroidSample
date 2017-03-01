@@ -1,7 +1,5 @@
 package me.appfriends.androidsample.sampleapp;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -21,9 +19,11 @@ import me.appfriends.androidsample.R;
 import me.appfriends.androidsample.sampleapp.chat.ChatActivity;
 import me.appfriends.androidsample.sampleapp.chat.DialogListFragment;
 import me.appfriends.sdk.AppFriends;
+import me.appfriends.sdk.model.Message;
 import me.appfriends.ui.base.BaseActivity;
 import me.appfriends.ui.dialog.DialogActivity;
 import rx.Subscriber;
+import rx.Subscription;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -33,6 +33,8 @@ public class MainActivity extends BaseActivity {
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
+
+    Subscription messageSendMonitorSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,44 @@ public class MainActivity extends BaseActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         registerPushToken();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (messageSendMonitorSubscription != null && !messageSendMonitorSubscription.isUnsubscribed()) {
+            messageSendMonitorSubscription.unsubscribe();
+        }
+
+        messageSendMonitorSubscription = AppFriends.getInstance().chatService().monitorMessageSendStatus()
+                .subscribe(new Subscriber<Message.Type>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Message.Type type) {
+                        // react to different message type here
+                        Log.d(TAG, "Message sent type: " + type.toString());
+                    }
+                });
+    }
+
+    @Override
+    public void onStop() {
+        if (messageSendMonitorSubscription != null && !messageSendMonitorSubscription.isUnsubscribed()) {
+            messageSendMonitorSubscription.unsubscribe();
+            messageSendMonitorSubscription = null;
+        }
+
+        super.onStop();
     }
 
     private void registerPushToken() {
