@@ -1,3 +1,10 @@
+3.0.14 (2017-03-07)
+- remove camera permission requirement for install so that tablets without camera can still install.
+
+3.0.13 (2017-02-27)
+------------------
+- fixed an issue with 1:1 chat. Detail: https://github.com/Hacknocraft/AppFriendsAndroidCore/issues/36
+
 3.0.12 (2017-02-14)
 ------------------
 
