@@ -1,6 +1,7 @@
-3.0.14 (2017-03-07)
+3.0.15 (2017-03-08)
 ------------------
 - remove camera permission requirement for install so that tablets without camera can still install.
+- revert a few feature merges such as typing indicator and timestamp
 
 3.0.13 (2017-02-27)
 ------------------
