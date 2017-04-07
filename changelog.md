@@ -1,3 +1,25 @@
+3.1.0 (2017-04-07)
+------------------
+New features:
+- Added typing indicators
+- Added swipe to view message timestamp
+- Added tap message to view read receipts
+- Added album
+- Added video
+- Added support for displaying location and gif messages
+
+UI updates:
+- Revamped chat view layout
+- Revamped message composer view layout
+- Added support for subtitles in chat view
+- Replaced old progress spinner with Android native one
+
+Core SDK updates:
+- Old APIs are deprecated with documented suggestions for new ones
+- Removed dependency on `Parceler` library, `Dialog` will not support parcel wrapping
+- Fixed leave dialog bug
+- Fixed a scenario where adding users to a dialog causes UI glitches in dialog settings
+
 3.0.15 (2017-03-08)
 ------------------
 - remove camera permission requirement for install so that tablets without camera can still install.
