@@ -1,5 +1,7 @@
 package me.appfriends.androidsample.sampleapp.chat;
 
+import android.util.Log;
+
 import java.util.List;
 
 import me.appfriends.sdk.AppFriends;
@@ -16,6 +18,8 @@ import rx.schedulers.Schedulers;
  */
 
 public class DialogListPresenter extends BasePresenter<DialogListContract.View> implements DialogListContract.Presenter {
+    private static final String TAG = DialogListPresenter.class.getSimpleName();
+
     private DialogService dialogService;
 
     public DialogListPresenter() {
@@ -35,7 +39,7 @@ public class DialogListPresenter extends BasePresenter<DialogListContract.View> 
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage());
                     }
 
                     @Override
@@ -51,8 +55,8 @@ public class DialogListPresenter extends BasePresenter<DialogListContract.View> 
     }
 
     @Override
-    public void createDialog(String name, List<String> pickedUserIds) {
-        Subscription createDialogSubscription = dialogService.createDialog(name, pickedUserIds)
+    public void createDialog(String name, List<String> pickedUserIds, String customData, String pushData) {
+        Subscription createDialogSubscription = dialogService.createDialog(name, pickedUserIds, customData, pushData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Dialog>() {

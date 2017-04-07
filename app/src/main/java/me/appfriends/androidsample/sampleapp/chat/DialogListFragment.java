@@ -1,7 +1,9 @@
 package me.appfriends.androidsample.sampleapp.chat;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,10 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import com.kaopiz.kprogresshud.KProgressHUD;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +34,13 @@ public class DialogListFragment extends BaseFragment implements DialogListContra
 
     private DialogListAdapter adapter;
     private DialogListPresenter presenter;
-    private KProgressHUD hud;
+    private ProgressDialog progress;
 
     public static DialogListFragment createInstance() {
         return new DialogListFragment();
     }
 
-    private int REQUEST_CODE_DIALOG_STARTER = 0;
+    public static final int REQUEST_CODE_DIALOG_STARTER = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +64,10 @@ public class DialogListFragment extends BaseFragment implements DialogListContra
                 launchDialogStarter();
             }
         });
+
+        progress = new ProgressDialog(getContext());
+        progress.setCancelable(false);
+        progress.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         presenter = new DialogListPresenter();
         presenter.attachView(this);
@@ -104,29 +106,24 @@ public class DialogListFragment extends BaseFragment implements DialogListContra
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (data != null && requestCode == REQUEST_CODE_DIALOG_STARTER && resultCode == ContactsPickerActivity.ACTIVITY_RESULT_CODE_CONTACT_PICKING) {
+        if (data != null && requestCode == REQUEST_CODE_DIALOG_STARTER
+                && resultCode == ContactsPickerActivity.ACTIVITY_RESULT_CODE_CONTACT_PICKING) {
 
             ArrayList<String> pickedUsers = (ArrayList<String>) data.getExtras().get(getString(R.string.EXTRA_CONTACTS_PICK));
             final Context context = getContext();
             if (pickedUsers != null && pickedUsers.size() > 0) {
 
-                // start group dialog
-                hud = KProgressHUD.create(context)
-                        .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                        .setLabel("Please wait")
-                        .setCancellable(true)
-                        .setAnimationSpeed(2)
-                        .setDimAmount(0.5f)
-                        .show();
+                progress.show();
+                progress.setContentView(me.appfriends.ui.R.layout.progressdialog);
 
                 if (pickedUsers.size() == 1) {
                     // individual conversation, use username
                     String userID = pickedUsers.get(0);
                     UserModel user = LocalUsersDatabase.sharedInstance().getUserWithID(userID);
-                    presenter.createDialog(user.getName(), pickedUsers);
+                    presenter.createDialog(user.getName(), pickedUsers, null, null);
                 } else {
                     // group conversation, use a default name
-                    presenter.createDialog("", pickedUsers);
+                    presenter.createDialog("", pickedUsers, "test custom data", "test push data");
                 }
             }
         }
@@ -139,8 +136,8 @@ public class DialogListFragment extends BaseFragment implements DialogListContra
 
     @Override
     public void onCreateDialogSuccess(Dialog dialog) {
-        if (hud != null) {
-            hud.dismiss();
+        if (progress != null) {
+            progress.dismiss();
         }
 
         Intent intent = new Intent(getContext(), ChatActivity.class);
@@ -150,8 +147,8 @@ public class DialogListFragment extends BaseFragment implements DialogListContra
 
     @Override
     public void onCreateDialogError() {
-        if (hud != null) {
-            hud.dismiss();
+        if (progress != null) {
+            progress.dismiss();
         }
         Toast.makeText(getContext(), "Failed to create dialog", Toast.LENGTH_SHORT).show();
     }

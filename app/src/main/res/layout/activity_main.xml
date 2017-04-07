@@ -39,7 +39,7 @@
         app:tabTextColor="@color/unselected_tab"
         app:tabSelectedTextColor="@color/white"
         app:tabIndicatorColor="@color/orange"
-        app:tabMode="scrollable"/>
+        app:tabMode="fixed"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

@@ -1,8 +1,10 @@
 package me.appfriends.androidsample.sampleapp.dialogsettings;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -11,12 +13,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
-
-import com.kaopiz.kprogresshud.KProgressHUD;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -27,8 +26,6 @@ import me.appfriends.sdk.DialogService;
 import me.appfriends.sdk.model.Dialog;
 import me.appfriends.ui.base.BaseActivity;
 import me.appfriends.ui.base.DividerItemDecoration;
-import me.appfriends.ui.chat.ChatPresenter;
-import me.appfriends.ui.dialog.DialogActivity;
 import me.appfriends.ui.dialog.DialogContract;
 import me.appfriends.ui.dialog.DialogPresenter;
 import rx.Subscriber;
@@ -36,6 +33,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static me.appfriends.androidsample.sampleapp.contacts.ContactsPickerActivity.EXTRA_EXCLUDE_USERS;
+import static me.appfriends.ui.dialog.DialogActivity.EXTRA_DIALOG_ID;
 
 /**
  * Created by bigtom on 16/11/13.
@@ -45,31 +43,29 @@ public class DialogSettingsActivity extends BaseActivity
         implements DialogSettingsAdapter.DialogSettingsAdapterClickListener, DialogContract.View {
     public static final String TAG = DialogSettingsActivity.class.getSimpleName();
 
-    public static final String EXTRA_DIALOG = "EXTRA_DIALOG";
+    public static final int ACTIVITY_RESULT_CODE_LEFT_DIALOG = 1000;
 
     private RecyclerView recyclerView;
     private Toolbar navigationBar;
 
     private DialogSettingsAdapter adapter;
 
+    private String dialogID;
     private Dialog dialog;
 
     private DialogService dialogService;
 
-    static public int ACTIVITY_RESULT_CODE_LEFT_DIALOG = 1;
 
     private DialogPresenter presenter;
-
-    KProgressHUD hud;
+    private ProgressDialog progress;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.dialog = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_DIALOG));
+        this.dialogID = getIntent().getStringExtra(EXTRA_DIALOG_ID);
         setContentView(R.layout.activity_dialog_settings);
 
         recyclerView = (RecyclerView) findViewById(R.id.dialog_settings_items_view);
-        setupRecyclerView();
 
         navigationBar = (Toolbar) findViewById(R.id.channel_chat_navigation_bar);
         setNavigationBar();
@@ -79,7 +75,7 @@ public class DialogSettingsActivity extends BaseActivity
         // listen to dialog changes
         presenter = new DialogPresenter();
         presenter.attachView(this);
-        presenter.loadDialog(this.dialog.id);
+        presenter.loadDialog(this.dialogID);
     }
 
     public void onDestroy() {
@@ -90,7 +86,8 @@ public class DialogSettingsActivity extends BaseActivity
     }
 
     private void setNavigationBar() {
-        navigationBar.setNavigationIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_keyboard_arrow_left_white_36dp, null));
+        navigationBar.setNavigationIcon(ResourcesCompat.getDrawable(getResources(),
+                R.drawable.ic_nav_arrow_back, null));
         navigationBar.setNavigationOnClickListener(onBackNavigationClickListener);
         navigationBar.setTitle(R.string.message_settings);
     }
@@ -134,8 +131,8 @@ public class DialogSettingsActivity extends BaseActivity
 
                         @Override
                         public void onError(Throwable e) {
-                            e.printStackTrace();
-                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, e.getMessage());
+                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
                             adapter.notifyDataSetChanged();
                         }
 
@@ -153,21 +150,18 @@ public class DialogSettingsActivity extends BaseActivity
 
     @Override
     public void leaveConversation() {
-
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Leave this conversation")
-                .setMessage("Are you sure?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
+                .setTitle(getString(R.string.leave_conversation_dialog_title))
+                .setMessage(getString(R.string.are_you_sure))
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         exitConversation();
                     }
 
                 })
-                .setNegativeButton("No", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show();
     }
 
@@ -175,13 +169,11 @@ public class DialogSettingsActivity extends BaseActivity
 
         if (dialog.type == Dialog.DialogType.GROUP) {
 
-            hud = KProgressHUD.create(this)
-                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                    .setLabel("Please wait")
-                    .setCancellable(true)
-                    .setAnimationSpeed(2)
-                    .setDimAmount(0.5f)
-                    .show();
+            progress = new ProgressDialog(this);
+            progress.show();
+            progress.setCancelable(false);
+            progress.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            progress.setContentView(me.appfriends.ui.R.layout.progressdialog);
 
         }
 
@@ -205,7 +197,7 @@ public class DialogSettingsActivity extends BaseActivity
 
             final Context context = this;
             String name = newName.replace("\n", "").replace("\r", "");
-            presenter.updateDialogName(dialog.id, name);
+            presenter.updateDialogName(this.dialogID, name);
         }
     }
 
@@ -223,6 +215,9 @@ public class DialogSettingsActivity extends BaseActivity
     @Override
     public void onDialogUpdated(Dialog updatedDialog) {
         this.dialog = updatedDialog;
+        if (recyclerView.getAdapter() == null) {
+            setupRecyclerView();
+        }
         adapter.updateDialog(dialog);
     }
 
@@ -253,8 +248,8 @@ public class DialogSettingsActivity extends BaseActivity
 
     @Override
     public void onLeaveDialog() {
-        if (hud != null) {
-            hud.dismiss();
+        if (progress != null) {
+            progress.dismiss();
         }
         setResult(ACTIVITY_RESULT_CODE_LEFT_DIALOG, null);
         finish();
@@ -263,8 +258,8 @@ public class DialogSettingsActivity extends BaseActivity
     @Override
     public void onLeaveDialogError(Throwable e) {
         Toast.makeText(this, "failed to leave dialog.", Toast.LENGTH_SHORT).show();
-        if (hud != null) {
-            hud.dismiss();
+        if (progress != null) {
+            progress.dismiss();
         }
     }
 

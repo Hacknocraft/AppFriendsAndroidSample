@@ -36,7 +36,7 @@
     <dimen name="xxlarge">64dp</dimen>
 
     <!-- Dialog List Fragment -->
-    <dimen name="dialog_list_item_height">72dp</dimen>
+    <dimen name="dialog_list_item_height">80dp</dimen>
     <dimen name="dialog_list_item_image_size">40dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->

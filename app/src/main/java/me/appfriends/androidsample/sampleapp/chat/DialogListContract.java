@@ -18,6 +18,6 @@ public interface DialogListContract {
 
     interface Presenter {
         void monitorDialogs();
-        void createDialog(String name, List<String> pickedUserIds);
+        void createDialog(String name, List<String> pickedUserIds, String customData, String pushData);
     }
 }

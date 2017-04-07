@@ -10,8 +10,9 @@ android {
         applicationId "me.appfriends.androidsample"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 30005
-        versionName "3.0.5"
+        multiDexEnabled true
+        versionCode 31000
+        versionName "3.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -54,25 +55,23 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     // RX
     compile "io.reactivex:rxjava:$RXJAVA_VERSION"
-    // Logging
-    compile 'com.jakewharton.timber:timber:4.3.0'
-    compile 'org.parceler:parceler-api:1.1.1'
-    apt 'org.parceler:parceler:1.1.1'
+
     // Token input for contact picking
     compile 'com.splitwise:tokenautocomplete:2.0.8@aar'
-    // Image and video cache and display
-    compile 'com.github.bumptech.glide:glide:3.7.0'
 
-    compile 'com.google.firebase:firebase-messaging:10.0.1'
+    compile 'com.google.firebase:firebase-messaging:10.2.0'
 
-    // HUD
-    compile 'com.kaopiz:kprogresshud:1.0.5'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
 
+    // sectioned recycle view
+    compile 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
+
+    compile 'com.android.support:multidex:1.0.1'
+
     // AppFriends
-    compile 'me.appfriends.sdk:ui:3.0.15'
+    compile 'me.appfriends.sdk:ui:3.1.0'
 }
 
 

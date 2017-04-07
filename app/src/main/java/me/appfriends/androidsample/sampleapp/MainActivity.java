@@ -22,6 +22,7 @@ import me.appfriends.sdk.AppFriends;
 import me.appfriends.sdk.model.Message;
 import me.appfriends.ui.base.BaseActivity;
 import me.appfriends.ui.dialog.DialogActivity;
+import rx.CompletableSubscriber;
 import rx.Subscriber;
 import rx.Subscription;
 
@@ -93,22 +94,22 @@ public class MainActivity extends BaseActivity {
     private void registerPushToken() {
         String userId = AppFriends.getInstance().currentLoggedInUserId();
         if (userId != null && !userId.isEmpty()) {
-            AppFriends.getInstance().pushService().registerPushToken(userId,
+            AppFriends.getInstance().pushService().updatePushToken(userId,
                     FirebaseInstanceId.getInstance().getToken())
-                    .subscribe(new Subscriber<Boolean>() {
+                    .subscribe(new CompletableSubscriber() {
                         @Override
                         public void onCompleted() {
-
+                            Log.d(TAG, "push token registered");
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            Log.d(TAG, e.getMessage());
+                            Log.e(TAG, e.getMessage());
                         }
 
                         @Override
-                        public void onNext(Boolean registered) {
-                            Log.d(TAG, "push token registered: " + registered);
+                        public void onSubscribe(Subscription d) {
+
                         }
                     });
         }
@@ -173,12 +174,16 @@ public class MainActivity extends BaseActivity {
     public void onNewIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            if(extras.containsKey("dialog_id"))
-            {
+            if (extras.containsKey("dialog_id")) {
                 String dialogID = extras.getString("dialog_id");
                 Intent chatIntent = new Intent(this, ChatActivity.class);
                 chatIntent.putExtra(DialogActivity.EXTRA_DIALOG_ID, dialogID);
                 startActivity(chatIntent);
+            }
+
+            if (extras.containsKey("push_data")) {
+                String pushData = extras.getString("push_data");
+                Log.d(TAG, "push data: " + pushData);
             }
         }
     }

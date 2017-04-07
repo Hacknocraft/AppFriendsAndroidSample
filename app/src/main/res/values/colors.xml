@@ -71,7 +71,6 @@
     <color name="message_system_text_color">@color/cool_gray</color>
     <color name="message_composer_attachment_icon_color">#888e96</color>
     <color name="message_composer_color">@color/cool_gray_lighter</color>
-    <color name="message_image_background_color">@color/gray_darker_50</color>
 
     <!-- Dialog -->
     <color name="dialog_settings_divider">#EFF3F5</color>

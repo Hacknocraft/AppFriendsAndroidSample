@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="47dp"
+    android:paddingTop="5dp"
+    android:background="@color/cool_gray_lighter"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/section_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/receipt_section_divider"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/margin_narrow"
+        android:layout_marginBottom="@dimen/margin_narrow"
+        android:src="@drawable/ic_check_green_24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/receipt_section_divider"
+        android:layout_toRightOf="@id/section_icon"
+        android:layout_marginLeft="@dimen/margin_xnarrow"
+        android:layout_marginBottom="@dimen/margin_narrow"
+        tools:text="SEEN"
+        android:textColor="@color/cool_gray_dark"
+        android:textStyle="bold"
+        android:id="@+id/receipt_header_title" />
+
+    <View
+        android:id="@+id/receipt_section_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/cool_gray"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

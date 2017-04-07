@@ -32,8 +32,8 @@ public class ContactsPickerActivity extends AppCompatActivity
     private ContactsAdapter adapter;
     private ContactsSearchInputView contactsSearchInputView;
 
-    static public int ACTIVITY_RESULT_CODE_CONTACT_PICKING = 0;
-    static public String EXTRA_EXCLUDE_USERS = "EXTRA_EXCLUDE_USERS";
+    public static final int ACTIVITY_RESULT_CODE_CONTACT_PICKING = 0;
+    public static final String EXTRA_EXCLUDE_USERS = "EXTRA_EXCLUDE_USERS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

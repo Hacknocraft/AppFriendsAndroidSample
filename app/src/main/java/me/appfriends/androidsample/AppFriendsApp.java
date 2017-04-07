@@ -1,14 +1,12 @@
 package me.appfriends.androidsample;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.StrictMode;
+import android.support.multidex.MultiDex;
 
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
 import me.appfriends.androidsample.sampleapp.LocalUsersDatabase;
 import me.appfriends.sdk.AppFriends;
-import timber.log.Timber;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -20,15 +18,8 @@ public class AppFriendsApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
 
         LocalUsersDatabase.sharedInstance().loadUsers(this);
-
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        } else {
-            Timber.plant(new CrashReportingTree());
-        }
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/Roboto-Regular.ttf")
@@ -40,12 +31,11 @@ public class AppFriendsApp extends Application {
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-
     }
 
-    private static class CrashReportingTree extends Timber.Tree {
-        @Override protected void log(int priority, String tag, String message, Throwable t) {
-            // crash reporting
-        }
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

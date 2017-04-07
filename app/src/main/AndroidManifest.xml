@@ -1,48 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="me.appfriends.androidsample">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
 
     <application
         android:name=".AppFriendsApp"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
+        android:screenOrientation="sensorPortrait"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".sampleapp.LoginActivity"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".sampleapp.MainActivity"
-            android:screenOrientation="portrait" />
+            tools:replace="android:screenOrientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="sensorPortrait">
+            <intent-filter>
+                <action android:name="afpm" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".sampleapp.chat.ChatActivity"
-            android:screenOrientation="portrait" />
+            tools:replace="android:screenOrientation"
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".sampleapp.contacts.ContactsPickerActivity"
-            android:screenOrientation="portrait" />
+            tools:replace="android:screenOrientation"
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name="me.appfriends.ui.dialog.DialogActivity"
-            android:screenOrientation="portrait" />
+            tools:replace="android:screenOrientation"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".sampleapp.receipts.MessageReceiptsActivity"
+            tools:replace="android:screenOrientation"
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".sampleapp.dialogsettings.DialogSettingsActivity"
-            android:screenOrientation="portrait" />
+            tools:replace="android:screenOrientation"
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name="me.appfriends.ui.mediaviewer.ImageViewerActivity"
-            android:screenOrientation="portrait" />
+            tools:replace="android:screenOrientation"
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name="me.appfriends.ui.mediaviewer.VideoViewerActivity"
-            android:screenOrientation="portrait" />
+            tools:replace="android:screenOrientation"
+            android:screenOrientation="sensorPortrait" />
 
         <meta-data
             android:name="me.appfriends.AppID"
@@ -51,6 +72,10 @@
         <meta-data
             android:name="me.appfriends.AppSecret"
             android:value="FIVeZO8ocQD5XJZ1HAyhYgtt" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="03038d3a19b8a24686fb3b23385eb1cc375fdec2" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -61,6 +86,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
     </application>
 
 </manifest>

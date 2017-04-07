@@ -206,16 +206,12 @@ public class DialogSettingsAdapter extends BaseAdapter<Dialog, DialogSettingsAda
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-
-                        for(int i = editable.length(); i > 0; i--) {
-
-                            if(editable.subSequence(i-1, i).toString().equals("\n")) {
-
-                                editable.replace(i-1, i, "");
+                        for (int i = editable.length(); i > 0; i--) {
+                            if (editable.subSequence(i - 1, i).toString().equals("\n")) {
+                                editable.replace(i - 1, i, "");
                                 changeDialogName();
                             }
                         }
-
                     }
                 });
             }
@@ -263,11 +259,9 @@ public class DialogSettingsAdapter extends BaseAdapter<Dialog, DialogSettingsAda
 
         private void changeDialogName() {
             if (groupNameEdit.getText() != null &&
-                    groupNameEdit.getText().length() > 0) {
-
-                if (dialogSettingsAdapterClickListener != null) {
-                    dialogSettingsAdapterClickListener.onDialogNameChange(groupNameEdit.getText().toString());
-                }
+                    groupNameEdit.getText().length() > 0
+                    && dialogSettingsAdapterClickListener != null) {
+                dialogSettingsAdapterClickListener.onDialogNameChange(groupNameEdit.getText().toString());
             }
         }
     }

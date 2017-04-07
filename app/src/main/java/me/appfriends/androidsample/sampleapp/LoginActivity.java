@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +20,14 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import me.appfriends.androidsample.R;
-import me.appfriends.androidsample.sampleapp.chat.ChatActivity;
 import me.appfriends.sdk.AppFriends;
 import me.appfriends.ui.base.BaseAdapter;
-import me.appfriends.ui.dialog.DialogActivity;
 import me.appfriends.ui.models.UserModel;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = LoginActivity.class.getSimpleName();
 
     RecyclerView loginTable;
     SeedUsersAdapter adapter;
@@ -77,12 +76,9 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onError(Throwable e) {
                                     loadingToast.cancel();
-                                    e.printStackTrace();
-                                    try {
-                                        Toast.makeText(context, "failed to login", Toast.LENGTH_SHORT).show();
-                                    } catch (Exception e1) {
-                                        e1.printStackTrace();
-                                    }
+                                    Log.e(TAG, e.getMessage());
+
+                                    Toast.makeText(context, "failed to login", Toast.LENGTH_LONG).show();
                                 }
 
                                 @Override
