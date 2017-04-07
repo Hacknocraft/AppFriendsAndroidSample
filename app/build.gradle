@@ -40,7 +40,7 @@ repositories {
 }
 
 dependencies {
-    final SUPPORT_LIBRARY_VERSION = '25.0.1'
+    final SUPPORT_LIBRARY_VERSION = '25.2.0'
     final RXJAVA_VERSION = '1.1.6'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
