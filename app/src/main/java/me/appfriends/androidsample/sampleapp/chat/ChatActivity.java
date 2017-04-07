@@ -31,6 +31,11 @@ public class ChatActivity extends DialogActivity {
     }
 
     @Override
+    public String subTitleText() {
+        return "subtitle";
+    }
+
+    @Override
     public void goToSettings(final Dialog dialog) {
         super.goToSettings(dialog);
 
