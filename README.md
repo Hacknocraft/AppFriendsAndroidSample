@@ -4,16 +4,6 @@ This sample app is created by AppFriends to demo AppFriends Android SDK.
 ## Gradle Integration
 Add the following to your build.gradle files.
 
-### Project Level Gradle
-```
-allprojects {
-    repositories {
-        jcenter()
-        maven { url 'https://jitpack.io' }
-    }
-}
-```
-
 ### App Level Gradle
 ```
 repositories {
@@ -22,7 +12,7 @@ repositories {
 
 dependencies {
     // AppFriends
-    compile 'me.appfriends.sdk:ui:3.0.5'
+    compile 'me.appfriends.sdk:ui:3.1.1'
 }
 ```
 
