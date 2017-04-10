@@ -1,5 +1,6 @@
 3.1.1 (2017-04-08)
 ------------------
+- Added push processing
 - Updated documentation
 
 3.1.0 (2017-04-07)
@@ -125,3 +126,4 @@ Notes:
 - Private conversation dialog name update
 - Stability improvements
 - Bug fixes
+

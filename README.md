@@ -1,6 +1,9 @@
 # AppFriends Android Sample App
 This sample app is created by AppFriends to demo AppFriends Android SDK.
 
+## SDK documentation
+- [Javadoc](https://hacknocraft.github.io/AppFriendsAndroidCore/)
+
 ## Gradle Integration
 Add the following to your build.gradle files.
 
