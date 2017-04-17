@@ -142,6 +142,7 @@ public class DialogListFragment extends BaseFragment implements DialogListContra
 
         Intent intent = new Intent(getContext(), ChatActivity.class);
         intent.putExtra(DialogActivity.EXTRA_DIALOG_ID, dialog.id);
+        intent.putExtra(DialogActivity.EXTRA_SHOW_KEYBOARD_ON_LOAD, true);
         getActivity().startActivity(intent);
     }
 

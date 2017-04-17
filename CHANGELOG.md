@@ -1,3 +1,7 @@
+3.1.2 (2017-04-17)
+------------------
+- Added support for showing keyboard immediately after creating a dialog
+
 3.1.1 (2017-04-08)
 ------------------
 - Added push processing
