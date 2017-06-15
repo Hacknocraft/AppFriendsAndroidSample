@@ -1,3 +1,12 @@
+3.1.4 (2017-06-15)
+------------------
+- Added periodic badge sync across login sessions
+- Moved dialog name change to a popup
+
+3.1.3 (2017-04-18)
+------------------
+- Re-enabled support for automatic URL detection in chat messages
+
 3.1.2 (2017-04-17)
 ------------------
 - Added support for showing keyboard immediately after creating a dialog

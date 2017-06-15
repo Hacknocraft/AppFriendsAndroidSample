@@ -1,10 +1,10 @@
 package me.appfriends.androidsample.sampleapp.dialogsettings;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,26 +100,8 @@ public class DialogSettingsAdapter extends BaseAdapter<Dialog, DialogSettingsAda
     @Override
     public void onBindViewHolder(final DialogSettingsHolder holder, int position) {
 
-        if (holder.groupNameEdit != null) {
-            holder.groupNameEdit.setText(dialog.name);
-            holder.groupNameEdit.setFocusable(true);
-            holder.groupNameEdit.setFocusableInTouchMode(true);
-            holder.groupNameEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
-                    if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_UNSPECIFIED) {
-                        InputMethodManager manager = (InputMethodManager) textView.getContext()
-                                .getSystemService(Context.INPUT_METHOD_SERVICE);
-                        if (manager != null) {
-                            manager.hideSoftInputFromWindow(textView.getWindowToken(), 0);
-                        }
-                        holder.groupNameEdit.clearFocus();
-
-                        return true;
-                    }
-                    return false;
-                }
-            });
+        if (holder.groupNameText != null) {
+            holder.groupNameText.setText(dialog.name);
         }
 
         if (holder.muteSwitch != null) {
@@ -170,7 +152,7 @@ public class DialogSettingsAdapter extends BaseAdapter<Dialog, DialogSettingsAda
         private SwitchCompat muteSwitch;
         private Button leaveConversationButton;
         private RelativeLayout addGroupMembers;
-        private EditText groupNameEdit;
+        private TextView groupNameText;
         private TextView userNameTitle;
         private TextView userNameSubtitle;
 
@@ -183,35 +165,12 @@ public class DialogSettingsAdapter extends BaseAdapter<Dialog, DialogSettingsAda
 
             context = itemView.getContext();
 
-            groupNameEdit = (EditText) itemView.findViewById(R.id.dialog_settings_dialog_name_edit);
-            if (groupNameEdit != null) {
-                groupNameEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            groupNameText = (TextView) itemView.findViewById(R.id.dialog_setting_dialog_name_text);
+            if (groupNameText != null) {
+                groupNameText.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onFocusChange(View view, boolean hasFocus) {
-
-                        // submit the new group name if it has changed
-                        if (!hasFocus) {
-                            changeDialogName();
-                        }
-                    }
-                });
-                groupNameEdit.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        for (int i = editable.length(); i > 0; i--) {
-                            if (editable.subSequence(i - 1, i).toString().equals("\n")) {
-                                editable.replace(i - 1, i, "");
-                                changeDialogName();
-                            }
-                        }
+                    public void onClick(View v) {
+                        showDialogNamePopup(groupNameText.getText().toString());
                     }
                 });
             }
@@ -256,12 +215,51 @@ public class DialogSettingsAdapter extends BaseAdapter<Dialog, DialogSettingsAda
             userNameSubtitle = (TextView) itemView.findViewById(R.id.user_list_item_subtitle);
         }
 
+        private void showDialogNamePopup(final String originName) {
+            Context context = itemView.getContext();
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View view = inflater.inflate(R.layout.dialog_modify_group_name, null);
+            final EditText groupNameEdit = (EditText) view.findViewById(R.id.dialog_setting_dialog_name_edit);
+            groupNameEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                    if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_UNSPECIFIED) {
+                        InputMethodManager manager = (InputMethodManager) textView.getContext()
+                                .getSystemService(Context.INPUT_METHOD_SERVICE);
+                        if (manager != null) {
+                            manager.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+                        }
 
-        private void changeDialogName() {
-            if (groupNameEdit.getText() != null &&
-                    groupNameEdit.getText().length() > 0
-                    && dialogSettingsAdapterClickListener != null) {
-                dialogSettingsAdapterClickListener.onDialogNameChange(groupNameEdit.getText().toString());
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            AlertDialog alertDialog = new AlertDialog.Builder(context)
+                    .setTitle("Modify Group Name")
+                    .setView(view)
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String s = groupNameEdit.getText().toString();
+                            if (!s.isEmpty() && !s.equals(originName)) {
+                                changeDialogName(s);
+                            }
+                        }
+                    })
+                    .create();
+            alertDialog.show();
+        }
+
+        private void changeDialogName(String dialogName) {
+            if (dialogSettingsAdapterClickListener != null) {
+                dialogSettingsAdapterClickListener.onDialogNameChange(dialogName);
             }
         }
     }
