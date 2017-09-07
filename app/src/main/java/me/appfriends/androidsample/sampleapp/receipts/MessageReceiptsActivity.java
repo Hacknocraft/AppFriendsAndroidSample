@@ -49,7 +49,7 @@ public class MessageReceiptsActivity extends BaseActivity implements MessageRece
         receiptTable.setLayoutManager(new LinearLayoutManager(this));
         receiptTable.setAdapter(messageReceiptsAdapter);
 
-        progressDialog = ProgressDialog.show(this, null, getString(me.appfriends.ui.R.string.please_wait), true);
+        progressDialog = ProgressDialog.show(this, null, getString(me.appfriends.ui.R.string.af_please_wait), true);
         presenter = new MessageReceiptsPresenter();
         presenter.attachView(this);
         presenter.loadReceipts(this.messageTempID);
@@ -65,7 +65,7 @@ public class MessageReceiptsActivity extends BaseActivity implements MessageRece
     }
 
     private void setNavigationBar() {
-        navigationBar.setNavigationIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_nav_arrow_back, null));
+        navigationBar.setNavigationIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.af_ic_back, null));
         navigationBar.setNavigationOnClickListener(onBackNavigationClickListener);
         navigationBar.setTitle(R.string.message_receipts);
     }

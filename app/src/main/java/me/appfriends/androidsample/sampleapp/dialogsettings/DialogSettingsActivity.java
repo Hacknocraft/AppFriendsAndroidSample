@@ -25,7 +25,7 @@ import me.appfriends.sdk.AppFriends;
 import me.appfriends.sdk.DialogService;
 import me.appfriends.sdk.model.Dialog;
 import me.appfriends.ui.base.BaseActivity;
-import me.appfriends.ui.base.DividerItemDecoration;
+import me.appfriends.androidsample.sampleapp.base.DividerItemDecoration;
 import me.appfriends.ui.dialog.DialogContract;
 import me.appfriends.ui.dialog.DialogPresenter;
 import rx.Subscriber;
@@ -87,7 +87,7 @@ public class DialogSettingsActivity extends BaseActivity
 
     private void setNavigationBar() {
         navigationBar.setNavigationIcon(ResourcesCompat.getDrawable(getResources(),
-                R.drawable.ic_nav_arrow_back, null));
+                R.drawable.af_ic_back, null));
         navigationBar.setNavigationOnClickListener(onBackNavigationClickListener);
         navigationBar.setTitle(R.string.message_settings);
     }
@@ -117,10 +117,10 @@ public class DialogSettingsActivity extends BaseActivity
     @Override
     public void onMuteDialog(final boolean mute) {
 
-        if (mute != dialog.muted) {
+        if (mute != dialog.isMuted()) {
 
             final Context context = this;
-            dialogService.updateDialog(dialog.id, mute)
+            dialogService.muteDialog(dialog.getId(), mute)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<Boolean>() {
@@ -167,25 +167,25 @@ public class DialogSettingsActivity extends BaseActivity
 
     private void exitConversation() {
 
-        if (dialog.type == Dialog.DialogType.GROUP) {
+        if (dialog.getDialogType() == Dialog.DialogType.GROUP) {
 
             progress = new ProgressDialog(this);
             progress.show();
             progress.setCancelable(false);
             progress.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            progress.setContentView(me.appfriends.ui.R.layout.progressdialog);
+            progress.setContentView(me.appfriends.ui.R.layout.af_progressdialog);
 
         }
 
-        presenter.leaveDialog(dialog.id, dialog.type);
+        presenter.leaveDialog(dialog.getId(), dialog.getDialogType());
     }
 
     @Override
     public void addGroupMembers() {
 
         Intent intent = new Intent(this, ContactsPickerActivity.class);
-        if (dialog != null && dialog.memberIds != null) {
-            intent.putStringArrayListExtra(EXTRA_EXCLUDE_USERS, new ArrayList(dialog.memberIds));
+        if (dialog != null && dialog.getMemberIds() != null) {
+            intent.putStringArrayListExtra(EXTRA_EXCLUDE_USERS, new ArrayList<>(dialog.getMemberIds()));
         }
         this.startActivityForResult(intent, ContactsPickerActivity.ACTIVITY_RESULT_CODE_CONTACT_PICKING);
     }
@@ -193,7 +193,7 @@ public class DialogSettingsActivity extends BaseActivity
     @Override
     public void onDialogNameChange(String newName) {
 
-        if (!newName.equals(dialog.name)) {
+        if (!newName.equals(dialog.getDialogName())) {
 
             final Context context = this;
             String name = newName.replace("\n", "").replace("\r", "");
@@ -208,7 +208,7 @@ public class DialogSettingsActivity extends BaseActivity
         if (data != null && resultCode == ContactsPickerActivity.ACTIVITY_RESULT_CODE_CONTACT_PICKING) {
 
             ArrayList<String> pickedUsers = (ArrayList<String>) data.getExtras().get(getString(R.string.EXTRA_CONTACTS_PICK));
-            presenter.addMembersToDialog(dialog.id, pickedUsers);
+            presenter.addMembersToDialog(dialog.getId(), pickedUsers);
         }
     }
 
@@ -272,7 +272,7 @@ public class DialogSettingsActivity extends BaseActivity
     public void onDialogNameChangeError(Throwable e) {
 
         new AlertDialog.Builder(this)
-                .setTitle(getString(me.appfriends.ui.R.string.error_title))
+                .setTitle(getString(me.appfriends.ui.R.string.af_error_title))
                 .setMessage("Failed to change dialog name")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

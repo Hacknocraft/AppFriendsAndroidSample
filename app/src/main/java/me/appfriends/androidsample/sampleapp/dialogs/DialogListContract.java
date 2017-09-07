@@ -1,4 +1,4 @@
-package me.appfriends.androidsample.sampleapp.chat;
+package me.appfriends.androidsample.sampleapp.dialogs;
 
 import java.util.List;
 
@@ -11,13 +11,11 @@ import me.appfriends.ui.base.BaseContract;
 
 public interface DialogListContract {
     interface View extends BaseContract.MvpView {
-        void onDialogsLoaded(List<Dialog> dialogs);
         void onCreateDialogSuccess(Dialog dialog);
         void onCreateDialogError();
     }
 
     interface Presenter {
-        void monitorDialogs();
         void createDialog(String name, List<String> pickedUserIds, String customData, String pushData);
     }
 }

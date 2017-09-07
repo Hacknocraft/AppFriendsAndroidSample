@@ -1,7 +1,6 @@
 package me.appfriends.androidsample.sampleapp.chat;
 
 import android.content.Intent;
-import android.os.Bundle;
 
 import java.util.ArrayList;
 
@@ -24,24 +23,22 @@ public class ChatActivity extends DialogActivity {
     public static final int REQUEST_CODE_DIALOG_SETTINGS = 1000;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void goToSettings(final Dialog dialog) {
+        super.goToSettings(dialog);
 
-        chatView.updateAdapter(new MessagesAdapter(this));
+        Intent intent = new Intent(this, DialogSettingsActivity.class);
+        intent.putExtra(DialogActivity.EXTRA_DIALOG_ID, dialog.getId());
+        startActivityForResult(intent, REQUEST_CODE_DIALOG_SETTINGS);
+    }
+
+    @Override
+    public boolean showDialogSettings() {
+        return true;
     }
 
     @Override
     public String subTitleText() {
         return "subtitle";
-    }
-
-    @Override
-    public void goToSettings(final Dialog dialog) {
-        super.goToSettings(dialog);
-
-        Intent intent = new Intent(this, DialogSettingsActivity.class);
-        intent.putExtra(DialogActivity.EXTRA_DIALOG_ID, dialog.id);
-        startActivityForResult(intent, REQUEST_CODE_DIALOG_SETTINGS);
     }
 
     @Override
@@ -59,13 +56,13 @@ public class ChatActivity extends DialogActivity {
 
         // just show receipts view for messages sent by the current user
         String currentUserID = AppFriends.getInstance().currentLoggedInUserId();
-        if (message != null && dialog != null && message.senderId.equals(currentUserID)) {
+        if (message != null && dialog != null && message.getSenderId().equals(currentUserID)) {
             Intent intent = new Intent(this, MessageReceiptsActivity.class);
-            intent.putExtra(EXTRA_MESSAGE_ID, message.tempId);
-            ArrayList<String> members = new ArrayList();
-            members.addAll(dialog.memberIds);
+            intent.putExtra(EXTRA_MESSAGE_ID, message.getTempId());
+            ArrayList<String> members = new ArrayList<>();
+            members.addAll(dialog.getMemberIds());
             intent.putStringArrayListExtra(EXTRA_DIALOG_MEMBERS, members);
-            intent.putExtra(DialogActivity.EXTRA_DIALOG_ID, dialog.id);
+            intent.putExtra(DialogActivity.EXTRA_DIALOG_ID, dialog.getId());
             startActivity(intent);
         }
     }

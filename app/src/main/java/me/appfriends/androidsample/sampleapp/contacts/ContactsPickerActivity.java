@@ -18,17 +18,17 @@ import java.util.List;
 
 import me.appfriends.androidsample.R;
 import me.appfriends.androidsample.sampleapp.LocalUsersDatabase;
-import me.appfriends.ui.models.UserModel;
+import me.appfriends.sdk.model.User;
 
 public class ContactsPickerActivity extends AppCompatActivity
-        implements TokenCompleteTextView.TokenListener<UserModel>,
+        implements TokenCompleteTextView.TokenListener<User>,
         ContactsSearchInputView.ContactsSearchInputViewListener,
         ContactsAdapter.ContactsAdapterListener {
 
 
     RecyclerView recyclerView;
 
-    private List<UserModel> usersList;
+    private List<User> usersList;
     private ContactsAdapter adapter;
     private ContactsSearchInputView contactsSearchInputView;
 
@@ -55,13 +55,13 @@ public class ContactsPickerActivity extends AppCompatActivity
             }
         });
 
-        List<UserModel> allUsers = LocalUsersDatabase.sharedInstance().getSeededUsers();
-        ArrayList<UserModel> includedUsers = new ArrayList();
+        List<User> allUsers = LocalUsersDatabase.sharedInstance().getSeededUsers();
+        ArrayList<User> includedUsers = new ArrayList();
         includedUsers.addAll(allUsers);
         List<String> excludedUsers = getIntent().getStringArrayListExtra(EXTRA_EXCLUDE_USERS);
         if (excludedUsers != null) {
-            for (UserModel user : allUsers) {
-                if (excludedUsers.contains(user.id)) {
+            for (User user : allUsers) {
+                if (excludedUsers.contains(user.getId())) {
                     includedUsers.remove(user);
                 }
             }
@@ -101,14 +101,14 @@ public class ContactsPickerActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTokenAdded(UserModel token) {
+    public void onTokenAdded(User token) {
 
         adapter.edit().replaceAll(usersList).commit();
         adapter.selectUser(token);
     }
 
     @Override
-    public void onTokenRemoved(UserModel token) {
+    public void onTokenRemoved(User token) {
 
         adapter.edit().replaceAll(usersList).commit();
         adapter.deselectUser(token);
@@ -118,7 +118,7 @@ public class ContactsPickerActivity extends AppCompatActivity
     public void currentTokenTextChanged(CharSequence text) {
 
         if (text.length() > 0) {
-            final List<UserModel> filteredUserModelList = filter(usersList, text.toString());
+            final List<User> filteredUserModelList = filter(usersList, text.toString());
             adapter.edit().replaceAll(filteredUserModelList).commit();
         } else {
             adapter.edit().replaceAll(usersList).commit();
@@ -126,12 +126,12 @@ public class ContactsPickerActivity extends AppCompatActivity
         recyclerView.scrollToPosition(0);
     }
 
-    private static List<UserModel> filter(List<UserModel> userModels, String query) {
+    private static List<User> filter(List<User> userModels, String query) {
         final String lowerCaseQuery = query.toLowerCase();
 
-        final List<UserModel> filteredUserModelList = new ArrayList<>();
-        for (UserModel userModel : userModels) {
-            final String userName = userModel.getName().toLowerCase();
+        final List<User> filteredUserModelList = new ArrayList<>();
+        for (User userModel : userModels) {
+            final String userName = userModel.getUserName().toLowerCase();
             if (userName.contains(lowerCaseQuery)) {
                 filteredUserModelList.add(userModel);
             }
@@ -140,13 +140,13 @@ public class ContactsPickerActivity extends AppCompatActivity
     }
 
     @Override
-    public void selectedUser(UserModel userModel) {
-        contactsSearchInputView.addObject(userModel);
+    public void selectedUser(User user) {
+        contactsSearchInputView.addObject(user);
     }
 
     @Override
-    public void deselectedUser(UserModel userModel) {
-        contactsSearchInputView.removeObject(userModel);
+    public void deselectedUser(User user) {
+        contactsSearchInputView.removeObject(user);
     }
 
     private class SearchTextWatch implements TextWatcher {

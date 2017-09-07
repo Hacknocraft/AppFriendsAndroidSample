@@ -2,6 +2,8 @@ package me.appfriends.androidsample.sampleapp.contacts;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.util.SortedList;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,141 +11,224 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import me.appfriends.androidsample.R;
-import me.appfriends.ui.base.BaseSortedListAdapter;
-import me.appfriends.ui.models.UserModel;
-
-import static me.appfriends.ui.models.UserModel.ALPHABETICAL_COMPARATOR;
+import me.appfriends.sdk.model.User;
 
 /**
  * Created by haowang on 11/12/16.
  */
 
-public class ContactsAdapter extends BaseSortedListAdapter<UserModel> {
+class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.UserHolder> {
 
-    public ContactsAdapterListener adapterListener;
-    public ArrayList<String> selectedUserIDs;
+    ContactsAdapterListener adapterListener;
+    ArrayList<String> selectedUserIDs;
 
-    public ContactsAdapter(Context context) {
-        super(context, UserModel.class, ALPHABETICAL_COMPARATOR);
-        selectedUserIDs = new ArrayList<String>();
+    private final LayoutInflater inflater;
+    private final SortedList<User> sortedList;
+    private final Comparator<User> comparator;
+
+    private interface Action {
+        void perform(SortedList<User> list);
     }
 
-    @Override
-    protected ViewHolder<? extends UserModel> onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+    ContactsAdapter(Context context) {
+        this.inflater = LayoutInflater.from(context);
+        this.comparator = ALPHABETICAL_COMPARATOR;
+        this.sortedList = new SortedList<>(User.class, new SortedList.Callback<User>() {
+            @Override
+            public int compare(User a, User b) {
+                return ContactsAdapter.this.comparator.compare(a, b);
+            }
 
-        final View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(ContactsAdapter.UserHolder.RESOURCE_ID, parent, false);
-        final UserHolder holder = new ContactsAdapter.UserHolder(itemView);
+            @Override
+            public void onInserted(int position, int count) {
+                notifyItemRangeInserted(position, count);
+            }
 
-        return holder;
+            @Override
+            public void onRemoved(int position, int count) {
+                notifyItemRangeRemoved(position, count);
+            }
+
+            @Override
+            public void onMoved(int fromPosition, int toPosition) {
+                notifyItemMoved(fromPosition, toPosition);
+            }
+
+            @Override
+            public void onChanged(int position, int count) {
+                notifyItemRangeChanged(position, count);
+            }
+
+            @Override
+            public boolean areContentsTheSame(User oldItem, User newItem) {
+                return ContactsAdapter.this.areItemContentsTheSame(oldItem, newItem);
+            }
+
+            @Override
+            public boolean areItemsTheSame(User item1, User item2) {
+                return ContactsAdapter.this.areItemsTheSame(item1, item2);
+            }
+        });
+
+        selectedUserIDs = new ArrayList<>();
     }
 
-    @Override
-    protected boolean areItemsTheSame(UserModel userModel1, UserModel userModel2) {
-        return userModel1.equals(userModel2);
+    private User getItem(int position) {
+        return sortedList.get(position);
     }
 
+    private User getLastItem() {
+        return sortedList.get(sortedList.size() - 1);
+    }
+
+
     @Override
-    protected boolean areItemContentsTheSame(UserModel oldItem, UserModel newItem) {
+    public ContactsAdapter.UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View itemView = inflater.inflate(UserHolder.RESOURCE_ID, parent, false);
+
+        return new UserHolder(itemView);
+    }
+
+    private boolean areItemsTheSame(User user1, User user2) {
+        return user1.equals(user2);
+    }
+
+    private boolean areItemContentsTheSame(User oldItem, User newItem) {
         return oldItem.equals(newItem);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder<? extends UserModel> holder, final int position, List<Object> payloads) {
+    public final void onBindViewHolder(UserHolder holder, int position) {
+        final User item = sortedList.get(position);
+        holder.bind(item);
+    }
+
+    @Override
+    public void onBindViewHolder(UserHolder holder, final int position, List<Object> payloads) {
         super.onBindViewHolder(holder, position, payloads);
 
-        UserHolder viewHolder = (UserHolder) holder;
-        final UserModel currentUserModel = getItem(position);
-        viewHolder.setUser(currentUserModel);
+        final User currentUser = getItem(position);
+        holder.setUser(currentUser);
 
         // selection logic
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selectedUserIDs.contains(currentUserModel.id)) {
-                    deselectUser(currentUserModel);
+                if (selectedUserIDs.contains(currentUser.getId())) {
+                    deselectUser(currentUser);
                 } else {
-                    selectUser(currentUserModel);
+                    selectUser(currentUser);
                 }
             }
         });
 
         // selection indicator
-        viewHolder.selectionIndicator.setSelected(this.selectedUserIDs.contains(currentUserModel.id));
+        holder.selectionIndicator.setSelected(this.selectedUserIDs.contains(currentUser.getId()));
 
         // set the section title
         if (position == 0) {
-            viewHolder.sectionHeader.setVisibility(View.VISIBLE);
+            holder.sectionHeader.setVisibility(View.VISIBLE);
         } else {
-            UserModel previousUserModel = getItem(position - 1);
-            if (previousUserModel.capitalizedNameSection().equals(currentUserModel.capitalizedNameSection())) {
-                viewHolder.sectionHeader.setVisibility(View.INVISIBLE);
+            User previousUserModel = getItem(position - 1);
+            if (previousUserModel.getUserName().substring(0, 1)
+                    .equalsIgnoreCase(currentUser.getUserName().substring(0, 1))) {
+                holder.sectionHeader.setVisibility(View.INVISIBLE);
             } else {
-                viewHolder.sectionHeader.setVisibility(View.VISIBLE);
+                holder.sectionHeader.setVisibility(View.VISIBLE);
             }
         }
 
         // hide divider unless it's the last row of the section
-        if (currentUserModel == getLastItem()) {
-            viewHolder.divider.setVisibility(View.VISIBLE);
+        if (currentUser == getLastItem()) {
+            holder.divider.setVisibility(View.VISIBLE);
         } else {
-            UserModel nextUserModel = getItem(position + 1);
-            if (nextUserModel.capitalizedNameSection().equals(currentUserModel.capitalizedNameSection())) {
-                viewHolder.divider.setVisibility(View.INVISIBLE);
+            User nextUserModel = getItem(position + 1);
+            if (nextUserModel.getUserName().substring(0, 1)
+                    .equalsIgnoreCase(currentUser.getUserName().substring(0, 1))) {
+                holder.divider.setVisibility(View.INVISIBLE);
             } else {
-                viewHolder.divider.setVisibility(View.VISIBLE);
+                holder.divider.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    public void selectUser(UserModel userModel) {
-        if (!selectedUserIDs.contains(userModel.id)) {
-            this.selectedUserIDs.add(userModel.id);
-            notifyItemChanged(positionForUser(userModel));
+    void selectUser(User user) {
+        if (!selectedUserIDs.contains(user.getId())) {
+            this.selectedUserIDs.add(user.getId());
+            notifyItemChanged(positionForUser(user));
             if (this.adapterListener != null) {
-                this.adapterListener.selectedUser(userModel);
+                this.adapterListener.selectedUser(user);
             }
         }
     }
 
-    public void deselectUser(UserModel userModel) {
-        if (selectedUserIDs.contains(userModel.id)) {
-            this.selectedUserIDs.remove(userModel.id);
-            notifyItemChanged(positionForUser(userModel));
+    void deselectUser(User user) {
+        if (selectedUserIDs.contains(user.getId())) {
+            this.selectedUserIDs.remove(user.getId());
+            notifyItemChanged(positionForUser(user));
             if (this.adapterListener != null) {
-                this.adapterListener.deselectedUser(userModel);
+                this.adapterListener.deselectedUser(user);
             }
         }
     }
 
-    public void addUsers(List<UserModel> userModels) {
-        this.edit().add(userModels).commit();
+    void addUsers(List<User> users) {
+        this.edit().add(users).commit();
     }
 
-    public int positionForUser(UserModel userModel) {
-        return this.getSortedList().indexOf(userModel);
+    private int positionForUser(User user) {
+        return this.sortedList.indexOf(user);
     }
 
-    public interface ContactsAdapterListener {
-        public void selectedUser(UserModel userModel);
-        public void deselectedUser(UserModel userModel);
+    @Override
+    public int getItemCount() {
+        return sortedList.size();
     }
 
-    public static class UserHolder extends ViewHolder<UserModel> {
+    Editor edit() {
+        return new EditorImpl();
+    }
 
-        public static final int RESOURCE_ID = R.layout.item_user_selection;
+    private List<User> filter(Filter filter) {
+        final List<User> list = new ArrayList<>();
+        for (int i = 0, count = sortedList.size(); i < count; i++) {
+            final User item = sortedList.get(i);
+            if (filter.test(item)) {
+                list.add(item);
+            }
+        }
+        return list;
+    }
+
+    User filterOne(Filter filter) {
+        for (int i = 0, count = sortedList.size(); i < count; i++) {
+            final User item = sortedList.get(i);
+            if (filter.test(item)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    static class UserHolder extends RecyclerView.ViewHolder {
+
+        private static final int RESOURCE_ID = R.layout.item_user_selection;
+
+        private User currentItem;
 
         // View cache
-        protected TextView sectionHeader;
-        protected TextView userName;
-        protected TextView userSubtitle;
-        protected ImageView selectionIndicator;
-        protected View divider;
+        private TextView sectionHeader;
+        private TextView userName;
+        private TextView userSubtitle;
+        private ImageView selectionIndicator;
+        private View divider;
 
-        public UserHolder(View itemView) {
+        private UserHolder(View itemView) {
             super(itemView);
 
             sectionHeader = (TextView) itemView.findViewById(R.id.user_list_section_title);
@@ -153,11 +238,97 @@ public class ContactsAdapter extends BaseSortedListAdapter<UserModel> {
             divider = itemView.findViewById(R.id.user_list_item_divider);
         }
 
-        public void setUser(@NonNull UserModel userModel) {
+        private void bind(User item) {
+            currentItem = item;
+        }
 
-            sectionHeader.setText(userModel.capitalizedNameSection());
-            userName.setText(userModel.getName());
+        public void setUser(@NonNull User user) {
+
+            sectionHeader.setText(user.getUserName().substring(0, 1).toUpperCase());
+            userName.setText(user.getUserName());
         }
     }
 
+    interface Editor {
+        Editor add(User item);
+        Editor add(List<User> items);
+        Editor replaceAll(List<User> items);
+        void commit();
+    }
+
+    interface Filter {
+        boolean test(User item);
+    }
+
+    interface ContactsAdapterListener {
+        void selectedUser(User user);
+        void deselectedUser(User user);
+    }
+
+    private class EditorImpl implements Editor {
+
+        private final List<Action> actions = new ArrayList<>();
+
+        @Override
+        public Editor add(final User item) {
+            actions.add(new ContactsAdapter.Action() {
+                @Override
+                public void perform(SortedList<User> list) {
+                    sortedList.add(item);
+                }
+            });
+            return this;
+        }
+
+        @Override
+        public Editor add(final List<User> items) {
+            actions.add(new ContactsAdapter.Action() {
+                @Override
+                public void perform(SortedList<User> list) {
+                    Collections.sort(items, comparator);
+                    sortedList.addAll(items);
+                }
+            });
+            return this;
+        }
+
+
+        @Override
+        public Editor replaceAll(final List<User> items) {
+            actions.add(new ContactsAdapter.Action() {
+                @Override
+                public void perform(SortedList<User> list) {
+                    final List<User> itemsToRemove = filter(new Filter() {
+                        @Override
+                        public boolean test(User item) {
+                            return !items.contains(item);
+                        }
+                    });
+                    for (int i = itemsToRemove.size() - 1; i >= 0; i--) {
+                        final User item = itemsToRemove.get(i);
+                        sortedList.remove(item);
+                    }
+                    sortedList.addAll(items);
+                }
+            });
+            return this;
+        }
+
+        @Override
+        public void commit() {
+            sortedList.beginBatchedUpdates();
+            for (ContactsAdapter.Action action : actions) {
+                action.perform(sortedList);
+            }
+            sortedList.endBatchedUpdates();
+            actions.clear();
+        }
+    }
+
+    public static final Comparator<User> ALPHABETICAL_COMPARATOR = new Comparator<User>() {
+        @Override
+        public int compare(User a, User b) {
+            return a.getUserName().compareToIgnoreCase(b.getUserName());
+        }
+    };
 }

@@ -4,16 +4,17 @@ apply from: '../config/quality/quality.gradle'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "me.appfriends.androidsample"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 23
         multiDexEnabled true
-        versionCode 31000
-        versionName "3.1.0"
+        versionCode 32000
+        versionName "3.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -40,7 +41,7 @@ repositories {
 }
 
 dependencies {
-    final SUPPORT_LIBRARY_VERSION = '25.2.0'
+    final SUPPORT_LIBRARY_VERSION = '25.1.0'
     final RXJAVA_VERSION = '1.1.6'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -71,7 +72,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
 
     // AppFriends
-    compile 'me.appfriends.sdk:ui:3.1.4'
+    compile 'me.appfriends.sdk:ui:3.2.0'
 }
 
 

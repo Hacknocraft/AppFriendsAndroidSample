@@ -12,7 +12,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 import me.appfriends.androidsample.R;
 import me.appfriends.androidsample.sampleapp.LocalUsersDatabase;
-import me.appfriends.ui.models.UserModel;
+import me.appfriends.sdk.model.User;
 
 /**
  * Created by haowang on 3/1/17.
@@ -47,8 +47,8 @@ public class MessageReceiptsAdapter extends SectionedRecyclerViewAdapter {
         public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
             final ReceiptUserView itemHolder = (ReceiptUserView) holder;
             String userID = this.usersList.get(position);
-            UserModel user = LocalUsersDatabase.sharedInstance().getUserWithID(userID);
-            itemHolder.userTitle.setText(user.getName());
+            User user = LocalUsersDatabase.sharedInstance().getUserWithID(userID);
+            itemHolder.userTitle.setText(user.getUserName());
         }
 
         @Override

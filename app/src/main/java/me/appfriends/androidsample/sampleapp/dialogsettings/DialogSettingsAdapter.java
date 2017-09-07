@@ -20,8 +20,8 @@ import android.widget.TextView;
 import me.appfriends.androidsample.R;
 import me.appfriends.androidsample.sampleapp.LocalUsersDatabase;
 import me.appfriends.sdk.model.Dialog;
+import me.appfriends.sdk.model.User;
 import me.appfriends.ui.base.BaseAdapter;
-import me.appfriends.ui.models.UserModel;
 
 /**
  * Created by bigtom on 16/11/13.
@@ -90,8 +90,8 @@ public class DialogSettingsAdapter extends BaseAdapter<Dialog, DialogSettingsAda
 
     @Override
     public int getItemCount() {
-        if (this.dialog.type == Dialog.DialogType.GROUP) {
-            return 4 + dialog.memberIds.size();
+        if (this.dialog.getDialogType() == Dialog.DialogType.GROUP) {
+            return 4 + dialog.getMemberIds().size();
         } else {
             return 2;
         }
@@ -99,21 +99,20 @@ public class DialogSettingsAdapter extends BaseAdapter<Dialog, DialogSettingsAda
 
     @Override
     public void onBindViewHolder(final DialogSettingsHolder holder, int position) {
-
         if (holder.groupNameText != null) {
-            holder.groupNameText.setText(dialog.name);
+            holder.groupNameText.setText(dialog.getDialogName());
         }
 
         if (holder.muteSwitch != null) {
-            holder.muteSwitch.setChecked(dialog.muted);
+            holder.muteSwitch.setChecked(dialog.isMuted());
         }
 
         if (holder.userNameTitle != null && holder.userNameSubtitle != null) {
 
-            String userID = dialog.memberIds.get(position - 3);
-            UserModel user = LocalUsersDatabase.sharedInstance().getUserWithID(userID);
+            String userID = dialog.getMemberIds().get(position - 3);
+            User user = LocalUsersDatabase.sharedInstance().getUserWithID(userID);
             if (user != null) {
-                holder.userNameTitle.setText(user.getName());
+                holder.userNameTitle.setText(user.getUserName());
             } else {
                 holder.userNameTitle.setText("unknown user");
             }
@@ -123,7 +122,7 @@ public class DialogSettingsAdapter extends BaseAdapter<Dialog, DialogSettingsAda
     @Override
     public int getItemViewType(int position) {
 
-        if (this.dialog.type == Dialog.DialogType.GROUP) {
+        if (this.dialog.getDialogType() == Dialog.DialogType.GROUP) {
 
             if (position == 0) {
                 return GROUP_NAME_EDIT_NAME_TYPE;

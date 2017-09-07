@@ -14,13 +14,13 @@ import android.widget.TextView;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 import me.appfriends.androidsample.R;
-import me.appfriends.ui.models.UserModel;
+import me.appfriends.sdk.model.User;
 
 /**
  * Created by haowang on 11/12/16.
  */
 
-public class ContactsSearchInputView extends TokenCompleteTextView<UserModel> {
+public class ContactsSearchInputView extends TokenCompleteTextView<User> {
 
     public ContactsSearchInputViewListener filterListener;
 
@@ -38,12 +38,12 @@ public class ContactsSearchInputView extends TokenCompleteTextView<UserModel> {
     }
 
     @Override
-    public void addObject(UserModel object, CharSequence sourceText) {
+    public void addObject(User object, CharSequence sourceText) {
         super.addObject(object, sourceText);
     }
 
     @Override
-    public void addObject(UserModel object) {
+    public void addObject(User object) {
         this.deleteText();
         super.addObject(object);
     }
@@ -53,28 +53,59 @@ public class ContactsSearchInputView extends TokenCompleteTextView<UserModel> {
     }
 
     @Override
-    protected View getViewForObject(UserModel userModel) {
+    protected View getViewForObject(User userModel) {
 
         LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         TextView view = (TextView) l.inflate(R.layout.contact_token, (ViewGroup) getParent(), false);
-        view.setText(userModel.getName());
+        view.setText(userModel.getUserName());
 
         return view;
     }
 
     @Override
-    protected UserModel defaultObject(String completionText) {
+    protected User defaultObject(String completionText) {
 
         ArrayAdapter adapter = (ArrayAdapter) getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
 
-            UserModel userModel = (UserModel) adapter.getItem(i);
-            if (userModel.getName().toLowerCase().contains(completionText.toLowerCase())) {
+            User userModel = (User) adapter.getItem(i);
+            if (userModel.getUserName().toLowerCase().contains(completionText.toLowerCase())) {
                 return userModel;
             }
         }
 
-        return new UserModel("", completionText);
+        User user = new User() {
+            private String userName;
+            private String avatar;
+
+            @Override
+            public String getId() {
+                return "";
+            }
+
+            @Override
+            public String getUserName() {
+                return userName == null ? " " : userName;
+            }
+
+            @Override
+            public String getAvatar() {
+                return avatar;
+            }
+
+            @Override
+            public void setUserName(String userName) {
+                this.userName = userName;
+            }
+
+            @Override
+            public void setAvatar(String avatarUrl) {
+                this.avatar = avatarUrl;
+            }
+        };
+        user.setUserName(completionText);
+
+        return user;
     }
 
     public void deleteText() {

@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <me.appfriends.ui.dialoglist.DialogListRecyclerView
-        android:id="@+id/dialogs_list_recycler_view"
+    <me.appfriends.ui.channellist.ChannelListRecyclerView
+        android:id="@+id/channel_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -14,14 +14,5 @@
         android:paddingTop="6dp"
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/dialog_starter_button"
-        android:layout_gravity="bottom|right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_anchor="@id/dialogs_list_recycler_view"
-        app:layout_anchorGravity="bottom|right|end"
-        style="@style/AppFriends.FloatingActionButton"/>
 
 </android.support.design.widget.CoordinatorLayout>

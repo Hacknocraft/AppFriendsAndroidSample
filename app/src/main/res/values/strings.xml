@@ -10,6 +10,7 @@
 
     <!-- Main Activity -->
     <string name="tab_dialogs_list">Messages</string>
+    <string name="tab_channels_list">Channels</string>
     <string name="tab_empty">Profile</string>
 
     <!-- Time -->

@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import me.appfriends.androidsample.R;
-import me.appfriends.ui.models.UserModel;
+import me.appfriends.sdk.model.User;
 
 /**
  * Created by haowang on 12/3/16.
@@ -21,21 +21,22 @@ import me.appfriends.ui.models.UserModel;
 public class LocalUsersDatabase {
 
     private JSONArray users;
-    private Context appContext;
     private static LocalUsersDatabase instance = null;
+    private static Object mutex = new Object();
 
     public static LocalUsersDatabase sharedInstance() {
-        if (instance == null) {
-            instance = new LocalUsersDatabase();
+        synchronized (mutex) {
+            if (instance == null) {
+                instance = new LocalUsersDatabase();
+            }
         }
+
         return instance;
     }
 
     public void loadUsers(Context context) {
-
-        instance.appContext = context;
         try {
-            InputStream inStream = appContext.getResources().openRawResource(R.raw.user_seeds);
+            InputStream inStream = context.getResources().openRawResource(R.raw.user_seeds);
             int size = inStream.available();
             byte[] buffer = new byte[size];
             inStream.read(buffer);
@@ -52,18 +53,47 @@ public class LocalUsersDatabase {
 
     public ArrayList getSeededUsers() {
 
-        ArrayList<UserModel> usersArrayList = new ArrayList<>();
+        ArrayList<User> usersArrayList = new ArrayList<>();
         for (int i = 0; i < users.length(); i++) {
             try {
                 JSONObject userObject = users.getJSONObject(i);
                 JSONObject nameObject = userObject.getJSONObject("name");
                 JSONObject loginObject = userObject.getJSONObject("login");
                 JSONObject pictureObject = userObject.getJSONObject("picture");
-                String userID = loginObject.getString("md5");
+                final String userID = loginObject.getString("md5");
                 String userName = nameObject.getString("first") + " " + nameObject.getString("last");
-                UserModel userModel = new UserModel(userID, userName);
-                userModel.avatar = pictureObject.getString("thumbnail");
-                usersArrayList.add(userModel);
+                User user = new User() {
+                    private String userName;
+                    private String avatar;
+
+                    @Override
+                    public String getId() {
+                        return userID;
+                    }
+
+                    @Override
+                    public String getUserName() {
+                        return userName == null ? " " : userName;
+                    }
+
+                    @Override
+                    public String getAvatar() {
+                        return avatar;
+                    }
+
+                    @Override
+                    public void setUserName(String userName) {
+                        this.userName = userName;
+                    }
+
+                    @Override
+                    public void setAvatar(String avatarUrl) {
+                        this.avatar = avatarUrl;
+                    }
+                };
+                user.setUserName(userName);
+                user.setAvatar(pictureObject.getString("thumbnail"));
+                usersArrayList.add(user);
             } catch (JSONException exception) {
                 Log.d("LoginActivity", exception.getMessage());
             }
@@ -72,21 +102,50 @@ public class LocalUsersDatabase {
         return usersArrayList;
     }
 
-    public UserModel getUserWithID(String searchUserID) {
+    public User getUserWithID(String searchUserID) {
 
-        UserModel foundUserModel = null;
+        User foundUserModel = null;
         for (int i = 0; i < users.length(); i++) {
             try {
                 JSONObject userObject = users.getJSONObject(i);
                 JSONObject nameObject = userObject.getJSONObject("name");
                 JSONObject loginObject = userObject.getJSONObject("login");
                 JSONObject pictureObject = userObject.getJSONObject("picture");
-                String userID = loginObject.getString("md5");
+                final String userID = loginObject.getString("md5");
                 String userName = nameObject.getString("first") + " " + nameObject.getString("last");
-                UserModel userModel = new UserModel(userID, userName);
-                userModel.avatar = pictureObject.getString("thumbnail");
+                User user = new User() {
+                    private String userName;
+                    private String avatar;
+
+                    @Override
+                    public String getId() {
+                        return userID;
+                    }
+
+                    @Override
+                    public String getUserName() {
+                        return userName == null ? " " : userName;
+                    }
+
+                    @Override
+                    public String getAvatar() {
+                        return avatar;
+                    }
+
+                    @Override
+                    public void setUserName(String userName) {
+                        this.userName = userName;
+                    }
+
+                    @Override
+                    public void setAvatar(String avatarUrl) {
+                        this.avatar = avatarUrl;
+                    }
+                };
+                user.setUserName(userName);
+                user.setAvatar(pictureObject.getString("thumbnail"));
                 if (userID.equals(searchUserID)) {
-                    foundUserModel = userModel;
+                    foundUserModel = user;
                 }
             } catch (JSONException exception) {
                 Log.d("LoginActivity", exception.getMessage());

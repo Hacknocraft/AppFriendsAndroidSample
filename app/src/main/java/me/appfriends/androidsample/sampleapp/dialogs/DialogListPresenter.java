@@ -1,6 +1,4 @@
-package me.appfriends.androidsample.sampleapp.chat;
-
-import android.util.Log;
+package me.appfriends.androidsample.sampleapp.dialogs;
 
 import java.util.List;
 
@@ -20,38 +18,10 @@ import rx.schedulers.Schedulers;
 public class DialogListPresenter extends BasePresenter<DialogListContract.View> implements DialogListContract.Presenter {
     private static final String TAG = DialogListPresenter.class.getSimpleName();
 
-    private DialogService dialogService;
+    private final DialogService dialogService;
 
     public DialogListPresenter() {
         dialogService = AppFriends.getInstance().dialogService();
-    }
-
-    @Override
-    public void monitorDialogs() {
-        Subscription dialogMonitorSubscription = dialogService.getDialogs()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Dialog>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(List<Dialog> dialogs) {
-                        DialogListContract.View view = getMvpView();
-                        if (view != null) {
-                            view.onDialogsLoaded(dialogs);
-                        }
-                    }
-                });
-
-        compositeSubscription.add(dialogMonitorSubscription);
     }
 
     @Override
@@ -62,6 +32,7 @@ public class DialogListPresenter extends BasePresenter<DialogListContract.View> 
                 .subscribe(new Subscriber<Dialog>() {
                     @Override
                     public void onCompleted() {
+                        // intentionally left empty
                     }
 
                     @Override

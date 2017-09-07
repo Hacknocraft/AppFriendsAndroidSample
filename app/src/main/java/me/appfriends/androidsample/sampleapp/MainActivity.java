@@ -16,8 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.appfriends.androidsample.R;
+import me.appfriends.androidsample.sampleapp.channels.ChannelListFragment;
 import me.appfriends.androidsample.sampleapp.chat.ChatActivity;
-import me.appfriends.androidsample.sampleapp.chat.DialogListFragment;
+import me.appfriends.androidsample.sampleapp.dialogs.DialogListFragment;
 import me.appfriends.sdk.AppFriends;
 import me.appfriends.sdk.model.Message;
 import me.appfriends.ui.base.BaseActivity;
@@ -65,12 +66,12 @@ public class MainActivity extends BaseActivity {
                 .subscribe(new Subscriber<Message.Type>() {
                     @Override
                     public void onCompleted() {
-
+                        // intentionally left empty
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e(TAG, e.getMessage());
                     }
 
                     @Override
@@ -109,7 +110,7 @@ public class MainActivity extends BaseActivity {
 
                         @Override
                         public void onSubscribe(Subscription d) {
-
+                            // intentionally left empty
                         }
                     });
         }
@@ -119,7 +120,7 @@ public class MainActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        AppFriends.getInstance().logout();
+        AppFriends.getInstance().logOut();
     }
 
     private void setupToolbar(Toolbar toolbar) {
@@ -132,13 +133,14 @@ public class MainActivity extends BaseActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(getString(R.string.tab_empty), EmptyFragment.createInstance());
         adapter.addFragment(getString(R.string.tab_dialogs_list), DialogListFragment.createInstance());
+        adapter.addFragment(getString(R.string.tab_channels_list), ChannelListFragment.createInstance());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(FRAGMENT_RETAIN_OFFSET_LIMIT);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
-        private List<String> titles = new ArrayList<>();
-        private List<Fragment> fragments = new ArrayList<>();
+        private final List<String> titles = new ArrayList<>();
+        private final List<Fragment> fragments = new ArrayList<>();
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);

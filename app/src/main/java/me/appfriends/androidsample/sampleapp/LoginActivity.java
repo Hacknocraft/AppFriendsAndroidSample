@@ -21,9 +21,10 @@ import java.util.ArrayList;
 
 import me.appfriends.androidsample.R;
 import me.appfriends.sdk.AppFriends;
+import me.appfriends.sdk.model.User;
 import me.appfriends.ui.base.BaseAdapter;
-import me.appfriends.ui.models.UserModel;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class LoginActivity extends AppCompatActivity {
@@ -31,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
 
     RecyclerView loginTable;
     SeedUsersAdapter adapter;
+
+    private Subscription loginSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,29 +51,42 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private class SeedUsersAdapter extends BaseAdapter<UserModel, SeedUsersAdapter.SeedUserViewHolder> {
+    @Override
+    protected void onDestroy() {
+        if (loginSubscription != null && !loginSubscription.isUnsubscribed()) {
+            loginSubscription.unsubscribe();
+        }
+        super.onDestroy();
+    }
+
+    private class SeedUsersAdapter extends BaseAdapter<User, SeedUsersAdapter.SeedUserViewHolder> {
 
         WeakReference<Activity> context;
 
         SeedUsersAdapter(final Activity context) {
 
             this.context = new WeakReference<>(context);
-            ArrayList<UserModel> usersArrayList = LocalUsersDatabase.sharedInstance().getSeededUsers();
+            ArrayList<User> usersArrayList = LocalUsersDatabase.sharedInstance().getSeededUsers();
             this.appendItems(usersArrayList);
 
             this.setOnItemSelectListener(new OnItemSelectListener() {
                 @Override
                 public void onItemSelected(int position) {
-                    final UserModel userModel = getItem(position);
+                    final User user = getItem(position);
 
                     final Toast loadingToast = Toast.makeText(context, "Logging in ...", Toast.LENGTH_LONG);
                     loadingToast.show();
 
-                    AppFriends.getInstance().login(userModel.id, userModel.getName())
+                    if (loginSubscription != null && !loginSubscription.isUnsubscribed()) {
+                        loginSubscription.unsubscribe();
+                    }
+
+                    loginSubscription = AppFriends.getInstance().login(user.getId(), user.getUserName(), user.getAvatar())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<Boolean>() {
                                 @Override
                                 public void onCompleted() {
+                                    // intentionally left empty
                                 }
 
                                 @Override
@@ -85,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onNext(Boolean loggedIn) {
                                     loadingToast.cancel();
                                     if (loggedIn) {
-                                        // TODO: perform login and get the userModel inside main activity
+                                        // TODO: perform login and get the user inside main activity
                                         Intent intent = new Intent(context, MainActivity.class);
                                         context.startActivity(intent);
 
@@ -114,9 +130,9 @@ public class LoginActivity extends AppCompatActivity {
         public void onBindViewHolder(SeedUserViewHolder holder, int position) {
             super.onBindViewHolder(holder, position);
 
-            UserModel userModel = getItem(position);
-            holder.setUserModelObject(userModel);
-            Glide.with(context.get()).load(userModel.getAvatar()).into(holder.userAvatar);
+            User item = getItem(position);
+            holder.setUserObject(item);
+            Glide.with(context.get()).load(item.getAvatar()).into(holder.userAvatar);
         }
 
         @Override
@@ -126,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
 
         class SeedUserViewHolder extends RecyclerView.ViewHolder {
 
-            private UserModel userModelObject;
+            private User userModelObject;
             ImageView userAvatar;
             TextView userNameLabel;
 
@@ -136,13 +152,13 @@ public class LoginActivity extends AppCompatActivity {
                 super(itemView);
             }
 
-            public UserModel getUserModelObject() {
+            public User getUserModelObject() {
                 return userModelObject;
             }
 
-            public void setUserModelObject(UserModel userModelObject) {
+            public void setUserObject(User userModelObject) {
                 this.userModelObject = userModelObject;
-                userNameLabel.setText(userModelObject.getName());
+                userNameLabel.setText(userModelObject.getUserName());
             }
         }
     }

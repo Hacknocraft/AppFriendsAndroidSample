@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppFriends.DialogList">
+        <item name="dialogTitleTextColor">@android:color/holo_red_light</item>
+        <item name="dialogUnreadTitleTextColor">@android:color/holo_red_light</item>
+        <item name="dialogUnreadTitleTextStyle">italic</item>
+    </style>
+
+    <!--
+    <style name="AppFriends.Toolbar">
+        <item name="android:textColorPrimary">@android:color/holo_red_dark</item>
+        <item name="android:textColorSecondary">@android:color/background_dark</item>
+        <item name="android:background">@color/orange</item>
+        <item name="colorControlNormal">#FF0000</item>
+    </style>
+    -->
+
+    <!--<style name="AppFriends.Popup">-->
+        <!--<item name="android:layout_marginStart">32dp</item>-->
+        <!--<item name="android:layout_marginEnd">32dp</item>-->
+        <!--<item name="android:layout_marginTop">32dp</item>-->
+        <!--<item name="android:layout_marginBottom">32dp</item>-->
+        <!--<item name="entranceOrigin">bottom</item>-->
+    <!--</style>-->
+
+</resources>

@@ -6,14 +6,12 @@
     <color name="colorAccent">@color/blue</color>
     <color name="transparent">#00000000</color>
 
-    <!-- GC Primary -->
     <color name="blue">#0080d6</color>
     <color name="white">#fff</color>
     <color name="off_black">#35373d</color>
     <color name="black">#000</color>
     <color name="charcoalGrey">#35373d</color>
 
-    <!-- GC Neutral -->
     <color name="gray_darker">#444444</color>
     <color name="gray_dark">#797979</color>
     <color name="gray">#c8c8c8</color>
@@ -24,7 +22,6 @@
     <color name="cool_gray_light">#ced8df</color>
     <color name="cool_gray_lighter">#f5f8fa</color>
 
-    <!-- GC Secondary -->
     <color name="blue_light">#39beff</color>
     <color name="blue_dark">#19467c</color>
     <color name="green">#009345</color>
@@ -38,7 +35,6 @@
     <color name="orange_dark">#c35106</color>
     <color name="yellow">#f1ac0a</color>
 
-    <!-- Alpha colors -->
     <color name="blue_50">#800080d6</color>
     <color name="black_50">#80000000</color>
     <color name="black_90">#e7000000</color>
@@ -74,4 +70,8 @@
 
     <!-- Dialog -->
     <color name="dialog_settings_divider">#EFF3F5</color>
+
+    <!-- Override Dialog List Colors
+    <color name="af_dialog_avatar_color">@color/red</color>
+    -->
 </resources>
