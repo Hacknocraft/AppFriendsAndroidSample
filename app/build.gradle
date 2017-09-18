@@ -72,7 +72,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
 
     // AppFriends
-    compile 'me.appfriends.sdk:ui:3.2.1'
+    compile 'me.appfriends.sdk:ui:3.2.2'
 }
 
 
