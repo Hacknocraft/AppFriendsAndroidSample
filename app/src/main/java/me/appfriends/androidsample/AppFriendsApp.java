@@ -5,9 +5,11 @@ import android.content.Context;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
+import io.github.inflationx.calligraphy3.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
+import io.github.inflationx.viewpump.ViewPump;
 import me.appfriends.androidsample.sampleapp.LocalUsersDatabase;
 import me.appfriends.sdk.AppFriends;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by Mike Dai Wang on 2016-11-02.
@@ -21,9 +23,12 @@ public class AppFriendsApp extends Application {
 
         LocalUsersDatabase.sharedInstance().loadUsers(this);
 
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
-                .setFontAttrId(R.attr.fontPath)
+        ViewPump.init(ViewPump.builder()
+                .addInterceptor(new CalligraphyInterceptor(
+                        new CalligraphyConfig.Builder()
+                                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
+                                .setFontAttrId(R.attr.fontPath)
+                                .build()))
                 .build());
 
         AppFriends instance = AppFriends.getInstance();

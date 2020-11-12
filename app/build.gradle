@@ -1,18 +1,17 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply from: '../config/quality/quality.gradle'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 29
+    buildToolsVersion '30.0.2'
 
     defaultConfig {
         applicationId "me.appfriends.androidsample"
         minSdkVersion 21
-        targetSdkVersion 23
+        targetSdkVersion 29
         multiDexEnabled true
-        versionCode 32000
-        versionName "3.2.0"
+        versionCode 32500
+        versionName "3.2.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -43,36 +42,33 @@ repositories {
 dependencies {
     final SUPPORT_LIBRARY_VERSION = '25.1.0'
     final RXJAVA_VERSION = '1.1.6'
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:support-annotations:$SUPPORT_LIBRARY_VERSION"
-    testCompile 'junit:junit:4.12'
+    implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+    implementation "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
+    implementation "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
+    implementation "com.android.support:support-annotations:$SUPPORT_LIBRARY_VERSION"
+    testImplementation 'junit:junit:4.12'
     // fonts
-    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    implementation 'io.github.inflationx:calligraphy3:3.1.1'
+    implementation 'io.github.inflationx:viewpump:2.0.3'
     // RX
-    compile "io.reactivex:rxjava:$RXJAVA_VERSION"
+    implementation "io.reactivex:rxjava:$RXJAVA_VERSION"
 
     // Token input for contact picking
-    compile 'com.splitwise:tokenautocomplete:2.0.8@aar'
+    implementation 'com.splitwise:tokenautocomplete:2.0.8@aar'
 
-    compile 'com.google.firebase:firebase-messaging:10.2.0'
-
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
-        transitive = true;
-    }
+    implementation 'com.google.firebase:firebase-messaging:10.2.1'
 
     // sectioned recycle view
-    compile 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
+    implementation 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
 
-    compile 'com.android.support:multidex:1.0.1'
+    implementation 'com.android.support:multidex:1.0.1'
 
     // AppFriends
-    compile 'me.appfriends.sdk:ui:3.2.4'
+    implementation 'me.appfriends.sdk:ui:3.2.5'
 }
 
 
