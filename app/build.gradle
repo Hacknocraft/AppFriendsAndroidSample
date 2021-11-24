@@ -1,17 +1,18 @@
-apply plugin: 'com.android.application'
-apply from: '../config/quality/quality.gradle'
+plugins {
+    id 'com.android.application'
+}
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion '30.0.2'
 
     defaultConfig {
         applicationId "me.appfriends.androidsample"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         multiDexEnabled true
-        versionCode 32500
-        versionName "3.2.5"
+        versionCode 32511
+        versionName "3.2.5.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -60,15 +61,23 @@ dependencies {
     // Token input for contact picking
     implementation 'com.splitwise:tokenautocomplete:2.0.8@aar'
 
-    implementation 'com.google.firebase:firebase-messaging:10.2.1'
+    implementation 'com.google.firebase:firebase-messaging:11.6.0'
 
     // sectioned recycle view
     implementation 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
 
     implementation 'com.android.support:multidex:1.0.1'
 
+    // Rx
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation "io.reactivex:rxjava:1.1.6"
+
+    // Image and video cache and display
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+
     // AppFriends
-    implementation 'me.appfriends.sdk:ui:3.2.5'
+    implementation 'me.appfriends.sdk:ui:3.2.5.1-beta'
+    implementation 'me.appfriends.sdk:core:3.2.5.1-beta'
 }
 
 

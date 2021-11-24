@@ -94,6 +94,16 @@ public class ContactsSearchInputView extends TokenCompleteTextView<User> {
             }
 
             @Override
+            public boolean isBlocked() {
+                return false;
+            }
+
+            @Override
+            public String getCustomData() {
+                return null;
+            }
+
+            @Override
             public void setUserName(String userName) {
                 this.userName = userName;
             }

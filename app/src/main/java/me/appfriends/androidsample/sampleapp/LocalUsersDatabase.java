@@ -82,6 +82,16 @@ public class LocalUsersDatabase {
                     }
 
                     @Override
+                    public boolean isBlocked() {
+                        return false;
+                    }
+
+                    @Override
+                    public String getCustomData() {
+                        return null;
+                    }
+
+                    @Override
                     public void setUserName(String userName) {
                         this.userName = userName;
                     }
@@ -130,6 +140,16 @@ public class LocalUsersDatabase {
                     @Override
                     public String getAvatar() {
                         return avatar;
+                    }
+
+                    @Override
+                    public boolean isBlocked() {
+                        return false;
+                    }
+
+                    @Override
+                    public String getCustomData() {
+                        return null;
                     }
 
                     @Override
